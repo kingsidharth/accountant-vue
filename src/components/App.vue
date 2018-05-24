@@ -59,22 +59,15 @@ import Hero from './Hero.vue'
 
 export default {
   name: 'app-frame',
+
   data: function() {
-    return {
-      name: "Accountant",
-      subtitle: "Count the beans...",
-      modal: {
-        active: true,
-      },
-      col: 23,
-      current_status: {},
-      transactions: [],
-      accounts: []
-    }
+    return this.$store.state
   }, // data
+
   mounted: function() {
     this.get_accounts()
   },
+
   methods: {
     get_api_response(endpoint) {
       // string => fetch object (then-able)

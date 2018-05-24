@@ -29,8 +29,7 @@ export default {
   },
   methods: {
     handle_click: function() {
-      console.log(this.$root.$data)
-      // this.$root.$data.modal.active = true;
+      this.$store.dispatch('modal_toggle')
     }
   }
 }

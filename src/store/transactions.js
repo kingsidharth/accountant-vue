@@ -10,7 +10,7 @@
 
 */
 import { union } from 'lodash'
-import api from './api'
+import api from '../api'
 
 
 const state = {

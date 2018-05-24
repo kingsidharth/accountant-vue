@@ -61,7 +61,7 @@ export default {
   name: 'app-frame',
 
   data: function() {
-    return this.$store.state
+    return this.$store.state.meta
   }, // data
 
   mounted: function() {
@@ -79,6 +79,7 @@ export default {
         }
       })
     },
+
     get_accounts() {
       // null => promise
       const endpoint = 'http://local.appserver.com:5000/v1/accounts/'
@@ -100,9 +101,11 @@ export default {
       })
     },
   },
+
   components: {
     TopNav,
     Hero
   },
+
 }
 </script>

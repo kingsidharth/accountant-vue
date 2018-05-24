@@ -7,18 +7,19 @@
     <Hero/>
     <h2>Count the beans</h2>
     <hr>
-    <ul v-if="accounts">
+    <!-- <ul v-if="accounts">
       <li v-for="a in accounts" v-bind:key="a.id">
         {{ a.name }} | {{ a.balance }} |
         <a href="#" @click="get_account_transactions(a.id)">Show Transactions</a>
       </li>
-    </ul>
+    </ul> -->
+    <AccountsList/>
     <hr>
-    <ul v-if="transactions">
+    <!-- <ul v-if="transactions">
       <li v-for="t in transactions" v-bind:key="t.id">
         {{ t.created_at }} | {{ t.description }} | {{ t.amount }}
       </li>
-    </ul>
+    </ul> -->
     <b-modal :active.sync="modal.active" :width="640" scroll="keep">
       <div class="card">
         <div class="card-image">
@@ -57,6 +58,8 @@ import _ from 'lodash'
 import TopNav from './TopNav.vue'
 import Hero from './Hero.vue'
 
+import AccountsList from './accounts/AccountsList.vue'
+
 export default {
   name: 'app-frame',
 
@@ -83,7 +86,6 @@ export default {
     get_accounts() {
       // null => promise
       const endpoint = 'http://local.appserver.com:5000/v1/accounts/'
-      let accounts
 
       return this.get_api_response(endpoint).then((json) => {
         this.accounts = _.union(this.accounts, json.accounts)
@@ -104,7 +106,8 @@ export default {
 
   components: {
     TopNav,
-    Hero
+    Hero,
+    AccountsList,
   },
 
 }

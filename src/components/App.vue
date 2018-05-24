@@ -10,7 +10,7 @@
     <AccountsList/>
     <hr>
     <TransactionsList/>
-    
+
     <b-modal :active.sync="modal.active" :width="640" scroll="keep">
       <div class="card">
         <div class="card-image">
@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import TopNav from './TopNav.vue'
 import Hero from './Hero.vue'
 
@@ -60,41 +59,9 @@ export default {
   }, // data
 
   mounted: function() {
-    this.get_accounts()
   },
 
-  methods: {
-    get_api_response(endpoint) {
-      // string => fetch object (then-able)
-      return fetch(endpoint, { mode: 'cors' }).then((response) => {
-        if(!response.ok) {
-          console.error(response)
-        } else {
-          return response.json()
-        }
-      })
-    },
-
-    get_accounts() {
-      // null => promise
-      const endpoint = 'http://local.appserver.com:5000/v1/accounts/'
-
-      return this.get_api_response(endpoint).then((json) => {
-        this.accounts = _.union(this.accounts, json.accounts)
-        return json.accounts
-      })
-    },
-
-    get_account_transactions(account_id) {
-      const endpoint =  'http://local.appserver.com:5000/v1/accounts/' +
-                        account_id +
-                        '/transactions'
-
-      return this.get_api_response(endpoint).then((json) => {
-        this.transactions = json
-      })
-    },
-  },
+  methods: {},
 
   components: {
     TopNav,

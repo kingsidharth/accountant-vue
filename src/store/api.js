@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { includes, keys } from 'lodash'
 
 const endpoints_map = {
   BASE: 'http://local.appserver.com:5000/',
@@ -19,7 +19,7 @@ const resolver = function(map) {
 
 const is_leggit_key = function(key) {
   // ENUM:String => :Boolean
-  if (_.includes(_.keys(endpoints_map), key)) {
+  if (includes(keys(endpoints_map), key)) {
     return true
   } else {
     console.error(key + ' doesn\'t match any key in endpoints_map')

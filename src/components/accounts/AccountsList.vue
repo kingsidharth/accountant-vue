@@ -19,7 +19,14 @@ export default {
 
   mounted: function() {
     this.$store.dispatch('account_get', [])
-  }
+  },
+
+  methods: {
+    get_transactions: function(account_id) {
+      console.log('I was clicked in AccountsList.vue');
+      // this.$store.dispatch('ACCOUNT_TRANSACTIONS')
+    },
+  },
 }
 
 </script>

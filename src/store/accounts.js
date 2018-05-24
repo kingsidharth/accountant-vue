@@ -11,7 +11,7 @@
 
 */
 import { union } from 'lodash'
-import request from './api'
+import api from './api'
 
 
 const state = {
@@ -26,8 +26,9 @@ const mutations = {
 
 const actions = {
   account_get(context) {
-    const endpoint = 'http://local.appserver.com:5000/v1/accounts/'
-    return request(endpoint).then((accounts) => {
+    const endpoint = api.base_url('ACCOUNTS')
+
+    return api.request(endpoint).then((accounts) => {
       context.commit('account_get', accounts)
     })
   }

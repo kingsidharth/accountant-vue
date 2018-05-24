@@ -3,22 +3,16 @@ import Vuex from 'vuex'
 
 import meta from './meta'
 import accounts from './accounts'
+import transactions from './transactions'
 
 Vue.use(Vuex)
 
-
-const state = {
-  transactions: [],
-}
-
 const modules = {
   meta,
-  accounts
+  accounts,
+  transactions
 }
 
 export default new Vuex.Store({
-  state,
-  // mutations,
-  // actions,
   modules
 })

@@ -20,7 +20,7 @@ const state = {
 
 const mutations = {
   account_get(state, payload) {
-    state.accounts = union(state.accounts, payload.accounts)
+    state.accounts = union(state.accounts, payload)
   }
 }
 
@@ -29,9 +29,10 @@ const actions = {
     const endpoint = api.base_url('ACCOUNTS')
 
     return api.request(endpoint).then((accounts) => {
-      context.commit('account_get', accounts)
+      context.commit('account_get', accounts.accounts)
     })
-  }
+  },
+
 }
 
 export default {

@@ -4,6 +4,7 @@ const endpoints_map = {
   BASE: 'http://local.appserver.com:5000/',
   VERSION: 'v1/',
   ACCOUNTS: 'accounts/',
+  TRANSACTIONS: 'transactions/',
 }
 
 const resolver = function(map) {
@@ -16,15 +17,29 @@ const resolver = function(map) {
   return endpoint
 }
 
-const mapper = function(key) {
+const is_leggit_key = function(key) {
+  // ENUM:String => :Boolean
+  if (_.includes(_.keys(endpoints_map), key)) {
+    return true
+  } else {
+    console.error(key + ' doesn\'t match any key in endpoints_map')
+    return false
+  }
+}
+
+const base_url = function(key) {
   // ENUM:String => URL:String
   let map = ['BASE', 'VERSION']
-
-  if (!_.includes(_.keys(endpoints_map), key)) {
-    console.error(key + ' doesn\'t match any key in endpoints_map')
-  } else {
+  if (is_leggit_key(key)) {
     map.push(key)
     return resolver(map)
+  }
+}
+
+const domain_url = function(key) {
+  // ENUM:String => URL:String
+  if (is_leggit_key(key)) {
+    return resolver([key])
   }
 }
 
@@ -50,6 +65,7 @@ const request = function(endpoint, type='GET') {
 
 
 export default {
-  base_url: mapper,
+  base_url,
+  domain_url,
   request
 }

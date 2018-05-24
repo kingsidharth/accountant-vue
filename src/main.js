@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-// Library to connect with API's
-import axios from 'axios'
-// import VueAxios from 'vue-axios'
 import Buefy from 'buefy'
 
 import store from './store'
@@ -25,7 +22,3 @@ new Vue({
     AppFrame
   }
 });
-
-
-// Vue.use(axios);
-// Vue.use(VueAxios);

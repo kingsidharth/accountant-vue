@@ -7,19 +7,10 @@
     <Hero/>
     <h2>Count the beans</h2>
     <hr>
-    <!-- <ul v-if="accounts">
-      <li v-for="a in accounts" v-bind:key="a.id">
-        {{ a.name }} | {{ a.balance }} |
-        <a href="#" @click="get_account_transactions(a.id)">Show Transactions</a>
-      </li>
-    </ul> -->
     <AccountsList/>
     <hr>
-    <!-- <ul v-if="transactions">
-      <li v-for="t in transactions" v-bind:key="t.id">
-        {{ t.created_at }} | {{ t.description }} | {{ t.amount }}
-      </li>
-    </ul> -->
+    <TransactionsList/>
+    
     <b-modal :active.sync="modal.active" :width="640" scroll="keep">
       <div class="card">
         <div class="card-image">
@@ -59,6 +50,7 @@ import TopNav from './TopNav.vue'
 import Hero from './Hero.vue'
 
 import AccountsList from './accounts/AccountsList.vue'
+import TransactionsList from './transactions/TransactionsList.vue'
 
 export default {
   name: 'app-frame',
@@ -108,6 +100,7 @@ export default {
     TopNav,
     Hero,
     AccountsList,
+    TransactionsList,
   },
 
 }

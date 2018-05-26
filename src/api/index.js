@@ -38,6 +38,14 @@ const domain_url = function(key) {
   }
 }
 
+const make_url_param_string = function(params) {
+  let url_string = '?'
+  Object.keys(params).map((k,i) => {
+    url_string += k + '=' + params[k]
+  })
+  return url_string
+}
+
 const request = function(endpoint, type='GET') {
   /*
   Args:
@@ -62,5 +70,6 @@ const request = function(endpoint, type='GET') {
 export default {
   base_url,
   domain_url,
-  request
+  request,
+  make_url_param_string
 }

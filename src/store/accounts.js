@@ -32,7 +32,6 @@ const actions = {
       context.commit('account_get', data)
     })
   },
-
 }
 
 export default {

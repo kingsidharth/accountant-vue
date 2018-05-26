@@ -30,9 +30,10 @@ const actions = {
   },
 
   account_get_transactions(context, query) {
-    const endpoint = api.base_url('ACCOUNTS') + query.account_id + '/' + api.domain_url('TRANSACTIONS')
-    return api.request(endpoint).then((transactions) => {
-      context.dispatch('transactions_update', transactions)
+    const endpoint = api.base_url('TRANSACTIONS') + api.make_url_param_string(query)
+
+    return api.request(endpoint).then(({data}) => {
+      context.dispatch('transactions_update', data)
     })
   }
 

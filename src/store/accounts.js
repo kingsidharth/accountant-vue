@@ -28,8 +28,8 @@ const actions = {
   account_get(context) {
     const endpoint = api.base_url('ACCOUNTS')
 
-    return api.request(endpoint).then((accounts) => {
-      context.commit('account_get', accounts.accounts)
+    return api.request(endpoint).then(({data}) => {
+      context.commit('account_get', data)
     })
   },
 

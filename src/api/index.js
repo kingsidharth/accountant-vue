@@ -49,7 +49,7 @@ const request = function(endpoint, type='GET') {
 
   return fetch(endpoint, { mode: 'cors' }).then((response) => {
     console.log('Remote call for ' + endpoint);
-    if(!response.ok) {
+    if(!response.ok || !!response.error) {
       console.error(response)
       console.log(endpoint + '');
     } else {

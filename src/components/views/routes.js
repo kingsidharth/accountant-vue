@@ -2,6 +2,7 @@ import AccountsList from '../accounts/AccountsList.vue'
 import AccountsSingle from '../accounts/AccountsSingle.vue'
 import TransactionsList from '../transactions/TransactionsList.vue'
 
+
 export default [
   {
     name: 'accounts',
@@ -11,7 +12,7 @@ export default [
   {
     name: 'account',
     path: '/account/:id',
-    component: AccountsSingle
+    component: AccountsSingle,
   },
   {
     name: 'transactions',

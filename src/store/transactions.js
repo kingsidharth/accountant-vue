@@ -9,39 +9,50 @@
   - Amount & Balance Checks
 
 */
-import { union } from 'lodash'
-import api from '../api'
+import { find, filter, forEach } from 'lodash'
 
+import api from '../api'
+import { update_resource } from './helpers'
+
+let endpoint = api.base_url('TRANSACTIONS')
 
 const state = {
-  transactions: []
+  data: []
 }
 
 
 const mutations = {
-  transactions_update(state, payload) {
-    state.transactions = union(state.transactions, payload)
+  transactions_remote_update: function(state, payload) {
+    update_resource(state.data, payload)
   }
 }
 
 const actions = {
-  transactions_update(context, payload) {
-    context.commit('transactions_update', payload)
-  },
-
-  account_get_transactions(context, query) {
-    const endpoint = api.base_url('TRANSACTIONS') + api.make_url_param_string(query)
-
-    return api.request(endpoint).then(({data}) => {
-      context.dispatch('transactions_update', data)
+  transactions_remote_get: async function(context) {
+    return await api.request(endpoint).then(({data}) => {
+      context.commit('transactions_remote_update', data)
     })
-  }
+  },
+}
 
+const getters = {
+  get_account_transactions: (state) => (account_id) => {
+    let data = state.data
+
+    return filter(data, function(d) {
+      if ( filter(d.amounts, { account_id: account_id }).length > 0) {
+        return d
+      } else {
+        return false
+      }
+    })
+  },
 }
 
 
 export default {
   state,
   mutations,
-  actions
+  actions,
+  getters
 }

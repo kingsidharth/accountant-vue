@@ -2,10 +2,12 @@
 @import "../../node_modules/bulma/sass/utilities/_all";
 
 // Set your colors
-$primary: #8c67ef;
+$primary: #3d0240;
 $primary-invert: findColorInvert($primary);
 $twitter: #4099FF;
 $twitter-invert: findColorInvert($twitter);
+$light: #b7b7b7;
+$light-invert: findColorInvert($light);
 
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: (
@@ -28,6 +30,7 @@ $link-focus-border: $primary;
 
 // Import Bulma and Buefy styles
 @import "logo";
+@import "forms";
 @import "../../node_modules/bulma/bulma";
 @import "../../node_modules/buefy/src/scss/buefy";
 @import "mdi_variables";

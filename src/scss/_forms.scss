@@ -1,0 +1,32 @@
+
+.form-group {
+  @extend .field;
+
+  label {
+    @extend .label;
+  }
+
+  input {
+    @extend .input;
+  }
+
+  textarea {
+    @extend .textarea;
+  }
+
+  .field-wrap {
+    @extend .control;
+
+  }
+
+}
+
+.field-select {
+  select {
+    @extend .select;
+  }
+}
+
+fieldset {
+  border: 0px;
+}

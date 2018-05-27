@@ -38,28 +38,50 @@ const domain_url = function(key) {
   }
 }
 
+
 const make_url_param_string = function(params) {
+  /*
+    params:Object => URL String:String
+    - params: (NOTE: Only flat structure is supported)
+      - key_1: value_1
+      - key_2: value_2
+    - URL String: ?key_1=value_1&key_2=value_2
+  */
+
   let url_string = '?'
   Object.keys(params).map((k,i) => {
     url_string += k + '=' + params[k]
   })
+
   return url_string
 }
 
-const request = function(endpoint, type='GET') {
+
+const request = function(endpoint, arg_options, type='GET') {
   /*
   Args:
-    - Key:String
-    - ['GET', 'POST', 'PUT', ]:String Default:GET
-
+    - Endpoint:URL
+    - Options:Object
+      - body: JSON
+    - type: [GET, POST, PUT, DELETE]
   => fetch function(thenable):Promise
   */
 
-  return fetch(endpoint, { mode: 'cors' }).then((response) => {
+  let options = {
+    body: JSON.stringify(arg_options),
+    mode: 'cors',
+    method: type,
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }
+
+  return fetch(endpoint, options).then((response) => {
     console.log('Remote call for ' + endpoint);
     if(!response.ok || !!response.error) {
       console.error(response)
-      console.log(endpoint + '');
+      // console.log(endpoint + '');
     } else {
       return response.json()
     }

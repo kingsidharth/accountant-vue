@@ -13,6 +13,8 @@
 import { union } from 'lodash'
 import api from '../api'
 
+let endpoint = api.base_url('ACCOUNTS')
+
 
 const state = {
   accounts: []
@@ -26,11 +28,17 @@ const mutations = {
 
 const actions = {
   account_get(context) {
-    const endpoint = api.base_url('ACCOUNTS')
-
     return api.request(endpoint).then(({data}) => {
       context.commit('account_get', data)
     })
+  },
+
+  account_create(context, accounts) {
+    return api.request(endpoint, accounts, 'POST')
+              .then(({data, errors}) => {
+                context.commit('account_get', data)
+                context.dispatch('modal_close')
+              })
   },
 }
 

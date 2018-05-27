@@ -20,6 +20,7 @@ const state = {
 
   modal: {
     active: false,
+    content: {}
   },
 
   view: {},
@@ -28,15 +29,31 @@ const state = {
 
 
 const mutations = {
-  modal_toggle(state) {
+  modal_toggle(state, payload) {
+    if (state.modal.active) {
+      state.modal.content = {}
+    }
+
+    if (!!payload) {
+      state.modal.content = payload
+    }
+
     state.modal.active = !state.modal.active
-  }
+  },
+
+  modal_close(state) {
+    state.modal.active = false
+  },
 }
 
 const actions = {
-  modal_toggle(context) {
-    context.commit('modal_toggle')
-  }
+  modal_toggle(context, content) {
+    context.commit('modal_toggle', content)
+  },
+
+  modal_close(context) {
+    context.commit('modal_close')
+  },
 }
 
 

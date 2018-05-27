@@ -11,15 +11,15 @@
     <hr>
     <TransactionsList/>
 
-    <b-modal :active.sync="modal.active" :width="640" scroll="keep">
+    <b-modal :active.sync="modal.active" :width="640" scroll="keep" :component="modal.content">
       <div class="card">
-        <div class="card-image">
+        <!-- <div class="card-image">
           <figure class="image is-4by3">
             <img src="http://placekitten.com/1280/960" alt="Image">
           </figure>
-        </div>
+        </div> -->
         <div class="card-content">
-          <div class="media">
+          <!-- <div class="media">
             <div class="media-left">
               <figure class="image is-48x48">
                   <img src="http://placekitten.com/96/96" alt="Image">
@@ -29,16 +29,11 @@
               <p class="title is-4">John Smith</p>
               <p class="subtitle is-6">@johnsmith</p>
             </div>
-          </div>
+          </div> -->
 
-          <div class="content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-            <a>#css</a> <a>#responsive</a>
-            <br>
-            <small>11:09 PM - 1 Jan 2016</small>
+          <div v-if="modal.content" class="content">
           </div>
-        </div>
+        </div><!-- .card-content -->
       </div>
     </b-modal>
   </div>
@@ -52,14 +47,11 @@ import AccountsList from './accounts/AccountsList.vue'
 import TransactionsList from './transactions/TransactionsList.vue'
 
 export default {
-  name: 'app-frame',
+  name: 'app',
 
   data: function() {
     return this.$store.state.meta
   }, // data
-
-  mounted: function() {
-  },
 
   methods: {},
 

@@ -48,6 +48,7 @@ import Hero from './layout/Hero.vue'
 import Sidebar from './layout/Sidebar.vue'
 
 import AccountsList from './accounts/AccountsList.vue'
+// import AccountsSingle from './accounts/AccountsSingle.vue'
 import TransactionsList from './transactions/TransactionsList.vue'
 
 export default {

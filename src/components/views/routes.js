@@ -1,8 +1,21 @@
 import AccountsList from '../accounts/AccountsList.vue'
+import AccountsSingle from '../accounts/AccountsSingle.vue'
 import TransactionsList from '../transactions/TransactionsList.vue'
 
 export default [
-  { path: '/accounts', component: AccountsList },
-  { path: '/account/:id', component: AccountsList },
-  { path: '/transactions', component: TransactionsList }
+  {
+    name: 'accounts',
+    path: '/accounts',
+    component: AccountsList
+  },
+  {
+    name: 'account',
+    path: '/account/:id',
+    component: AccountsSingle
+  },
+  {
+    name: 'transactions',
+    path: '/transactions',
+    component: TransactionsList
+  }
 ]

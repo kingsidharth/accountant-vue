@@ -5,7 +5,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 // Naming and path settings
 var appName = 'app';
-var entryPoint = './src/main.js';
+var entryPoint = ['babel-polyfill','./src/main.js'];
 var exportPath = path.resolve(__dirname, './build');
 
 // Enviroment flag
@@ -51,7 +51,8 @@ module.exports = {
         use: [{
           loader: 'babel-loader',
           options: {
-            presets: ['es2015', 'stage-2']
+            presets: ['es2015', 'stage-0', 'stage-2'],
+            plugins: ["transform-runtime"]
           }
         }]
       },

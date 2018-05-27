@@ -2,7 +2,7 @@
   <div>
     <button class="button" @click="add_account">Add Account</button>
     <ul v-if="accounts.length > 0">
-      <li v-for="a in accounts" v-bind:key="a.id" class="card" @click="see_account_details(a.id)">
+      <li v-for="a in accounts" :key="'account-' + a.id" class="card" @click="see_account_details(a.id)">
         <div class="card-content columns is-gapless is-clickable">
           <div class="column is-3">
             {{ a.name }}

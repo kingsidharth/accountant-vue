@@ -10,9 +10,11 @@
   - Account Transactions
 
 */
-import { unionWith, find, filter, includes, assign, map, indexOf, uniqBy, forEach } from 'lodash'
-import api from '../api'
 import Vue from 'vue'
+import { find, filter, includes, assign, map } from 'lodash'
+
+import api from '../api'
+import { update_resource } from './helpers'
 
 let endpoint = api.base_url('ACCOUNTS')
 
@@ -33,32 +35,8 @@ const state = {
 */
 const mutations = {
   accounts_remote_updated: function(state, payload) {
-
-    forEach(payload, function(a, index, payload) {
-      const known_accounts = map(state.data, 'id')
-
-      if(includes(known_accounts, a.id)) {
-        const source_index = indexOf(state.data, find(state.data, { id: a.id }))
-        state.data.splice(source_index, 1, a)
-      } else {
-        state.data.push(a)
-      }
-    })
+    update_resource(state.data, payload)
   },
-
-  // accounts_details_remote_updated: function(state, payload) {
-  //   let account = find(state.data, { id: payload.id })
-  //   let index = indexOf(state.data, account)
-  //   console.log(state.data);
-  //
-  //   if (index > 0) {
-  //     state.data.splice(index, 1, payload)
-  //   } else {
-  //     state.data.push(payload)
-  //   }
-  //
-  //   console.log(state.data);
-  // }
 }
 
 
@@ -121,7 +99,6 @@ const getters = {
     } else {
       return account
     }
-    console.log(account);
   },
 }
 

@@ -22,11 +22,7 @@
 <script>
 export default {
   name: 'transactions-list',
-
-  data: function() {
-    return this.$store.state.transactions
-  },
-
+  props: ['transactions'],
   methods: {
     edit_transaction(id) {
       console.log('Intent: Edit transaction ' + id);

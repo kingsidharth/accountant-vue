@@ -1,0 +1,9 @@
+#sidebar {
+  position: relative;
+  // left: -30%;
+  padding: 1em;
+
+  &.is_active {
+    left: 0%;
+  }
+}

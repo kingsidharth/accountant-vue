@@ -28,9 +28,17 @@ $link: $primary;
 $link-invert: $primary-invert;
 $link-focus-border: $primary;
 
+
+// Menu
+
+$menu-item-color: $primary;
+$menu-item-hover-background-color: $primary;
+$menu-item-hover-color: $white;
+
 // Import Bulma and Buefy styles
 @import "logo";
 @import "forms";
+@import "sidebar";
 @import "../../node_modules/bulma/bulma";
 @import "../../node_modules/buefy/src/scss/buefy";
 @import "mdi_variables";

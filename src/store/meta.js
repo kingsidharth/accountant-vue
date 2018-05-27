@@ -23,7 +23,9 @@ const state = {
     content: {}
   },
 
-  view: {},
+  sidebar: {
+    active: true,
+  },
 
 }
 
@@ -44,6 +46,10 @@ const mutations = {
   modal_close(state) {
     state.modal.active = false
   },
+
+  sidebar_toggle(state) {
+    state.sidebar.active = !state.sidebar.active
+  },
 }
 
 const actions = {
@@ -53,6 +59,10 @@ const actions = {
 
   modal_close(context) {
     context.commit('modal_close')
+  },
+
+  sidebar_toggle(context) {
+    context.commit('sidebar_toggle')
   },
 }
 

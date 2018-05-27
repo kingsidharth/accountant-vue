@@ -14,6 +14,7 @@
   - Debt
   - Special Accounts
   - Account:
+    - List
     - Meta
     - Transactions or Children? or Transactions of Children?
   - Create / Edit
@@ -23,3 +24,11 @@
     - Account
     - Transaction(s)
 */
+
+const state = {
+  view: {},
+}
+
+const mutations = {
+  view_change(state, payload)
+}

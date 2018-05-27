@@ -5,6 +5,7 @@
       <li v-for="a in accounts" v-bind:key="a.id">
         {{ a.name }} | {{ a.balance }} |
         <a href="#" @click.stop.prevent="get_transactions(a.id)">Show Transactions</a>
+        | <router-link to="/transactions">link</router-link>
       </li>
     </ul>
     <div v-else class="notification is-light">

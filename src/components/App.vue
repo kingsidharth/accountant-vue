@@ -4,12 +4,15 @@
       v-bind:name='name'
       v-bind:title='subtitle'
     />
-    <Hero/>
-    <h2>Count the beans</h2>
-    <hr>
-    <AccountsList/>
-    <hr>
-    <TransactionsList/>
+
+    <div class="columns">
+      <div class="column is-2">
+        <Sidebar id="sidebar"/>
+      </div>
+      <div class="column">
+        <router-view></router-view>
+      </div>
+    </div>
 
     <b-modal :active.sync="modal.active" :width="640" scroll="keep" :component="modal.content">
       <div class="card">
@@ -40,8 +43,9 @@
 </template>
 
 <script>
-import TopNav from './TopNav.vue'
-import Hero from './Hero.vue'
+import TopNav from './layout/TopNav.vue'
+import Hero from './layout/Hero.vue'
+import Sidebar from './layout/Sidebar.vue'
 
 import AccountsList from './accounts/AccountsList.vue'
 import TransactionsList from './transactions/TransactionsList.vue'
@@ -58,6 +62,7 @@ export default {
   components: {
     TopNav,
     Hero,
+    Sidebar,
     AccountsList,
     TransactionsList,
   },

@@ -7,12 +7,10 @@ import transactions from './transactions'
 
 Vue.use(Vuex)
 
-const modules = {
-  meta,
-  accounts,
-  transactions
-}
-
 export default new Vuex.Store({
-  modules
+  modules: {
+    meta,
+    accounts,
+    transactions
+  }
 })

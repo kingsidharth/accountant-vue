@@ -2,10 +2,18 @@
   <div>
     <button class="button" @click="add_account">Add Account</button>
     <ul v-if="accounts.length > 0">
-      <li v-for="a in accounts" v-bind:key="a.id">
-        {{ a.name }} | {{ a.balance }} |
-        <a href="#" @click.stop.prevent="get_transactions(a.id)">Show Transactions</a>
-        | <router-link to="/transactions">link</router-link>
+      <li v-for="a in accounts" v-bind:key="a.id" class="card">
+        <div class="card-content columns is-gapless is-clickable">
+          <div class="column is-3">
+            {{ a.name }}
+          </div>
+          <div class="column is-3">
+            {{ a.balance }}
+          </div>
+          <div class="column" v-if="a.detailed">
+            <router-link to="/transactions">Transactions</router-link>
+          </div>
+        </div>
       </li>
     </ul>
     <div v-else class="notification is-light">
@@ -16,31 +24,30 @@
 
 <script>
 import AccountsCreate from './AccountsCreate.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'accounts-list',
 
-  data: function() {
-    return this.$store.state.accounts
-  },
-
-  mounted: function() {
-    this.$store.dispatch('account_get', [])
+  computed: {
+    ...mapGetters({
+      accounts: 'accounts_get_all'
+    })
   },
 
   methods: {
-    get_transactions: function(account_id) {
-      this.$store.dispatch('account_get_transactions', { account_id })
-    },
-
-    get_accounts: function(ids) {
-      ids = ids || []
-      this.$store.dispatch('account_get', ids)
+    get_accounts: function() {
+      this.$store.dispatch('account_get')
     },
 
     add_account: function(e) {
       this.$store.dispatch('modal_toggle', AccountsCreate)
     },
+
+    get_transactions: function(account_id) {
+      this.$store.dispatch('account_get_transactions', { account_id })
+    },
+
   },
 }
 

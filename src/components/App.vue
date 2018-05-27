@@ -57,6 +57,10 @@ export default {
     return this.$store.state.meta
   }, // data
 
+  mounted: function() {
+    this.$store.dispatch('accounts_remote_get')
+  },
+
   methods: {},
 
   components: {

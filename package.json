@@ -37,11 +37,14 @@
     "lodash": "^4.17.10",
     "lodash-webpack-plugin": "^0.11.5",
     "mdi": "^2.2.43",
+    "moment": "^2.22.1",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
     "vue": "^2.5.16",
     "vue-axios": "^2.1.1",
+    "vue-d3": "^0.1.0",
     "vue-form-generator": "^2.2.2",
+    "vue-moment": "^4.0.0-0",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   }

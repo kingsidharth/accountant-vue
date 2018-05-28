@@ -8,6 +8,7 @@ import transactions from './transactions'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  // strict: true,
   modules: {
     meta,
     accounts,

@@ -26,6 +26,7 @@
     <div v-show="tab_active_check('transactions')" ref="transactions">
       <TransactionsList
         v-bind:transactions="transactions"
+        v-bind:account_id="account.id"
       />
     </div>
   </div><!-- if(account) -->
@@ -73,7 +74,6 @@ export default {
     if (this.account_id) {
       this.$store.dispatch('account_get_details', this.account_id)
     }
-
   },
 
   computed: {

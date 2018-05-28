@@ -61,6 +61,7 @@ export default {
   mounted: function() {
     this.$store.dispatch('accounts_remote_get')
     this.$store.dispatch('transactions_remote_get')
+    this.$snackbar.open(`App started. Initialization events sent.`)
   },
 
   methods: {},

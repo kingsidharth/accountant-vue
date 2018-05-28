@@ -64,6 +64,8 @@ export default {
 
     get_transactions_table: function() {
       const credits_debits_data = this.credits_debits_data
+      const get_cell_css_class = this.get_cell_css_class
+      const handle_cell_click = this.handle_cell_click
       const account_id = this.account_id
       const transactions = this.transactions
       const d3 = this.$d3
@@ -82,11 +84,14 @@ export default {
       const table_rows = table_body.selectAll('tr')
                           .data(transactions)
                             .enter().append('tr')
+                            .attr('data-id', (t) => { return 'transaction_' + t.id })
                             .each(function(t, i, transactions) {
 
                               d3.select(this).selectAll('td')
                                 .data(header_keys).enter()
                                 .append('td')
+                                .on('click', (k) => { return handle_cell_click(t.id, k) })
+                                .attr('class', (k) => { return get_cell_css_class(k) })
                                 .text(function(k, i){
 
                                   const amounts = credits_debits_data(t.amounts, account_id)
@@ -119,6 +124,18 @@ export default {
 
     parse_datetime: function(datetime) {
       return moment(datetime).format('MMM DD, Y')
+    },
+
+    get_cell_css_class: function(key){
+      if (key === 'created_at') {
+        return 'data data--date'
+      } else if (key === 'credit' || key === 'debit' || key === 'cumm') {
+        return 'data data--financial mono has-text-right'
+      }
+    },
+
+    handle_cell_click: function(key, prop) {
+      console.log( find(this.transactions, { id: key }) )
     },
 
   },

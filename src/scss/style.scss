@@ -35,11 +35,16 @@ $menu-item-color: $primary;
 $menu-item-hover-background-color: $primary;
 $menu-item-hover-color: $white;
 
+// Typography
+$family-monospace: 'Space Mono', 'PT Mono', monospace;
+$radius: $radius-small;
+
 // Import Bulma and Buefy styles
-@import "logo";
+// @import "logo";
 @import "forms";
 @import "sidebar";
-@import "../../node_modules/bulma/bulma";
-@import "../../node_modules/buefy/src/scss/buefy";
+@import "shame";
 @import "mdi_variables";
 @import "../../node_modules/mdi/scss/materialdesignicons";
+@import "../../node_modules/bulma/bulma";
+@import "../../node_modules/buefy/src/scss/buefy";

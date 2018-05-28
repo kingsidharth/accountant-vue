@@ -1,8 +1,17 @@
 <template>
   <div class="c-accounts c-accounts--single" v-if="account">
-    <Hero
+    <!-- <Hero
       v-bind:title="account.name"
-    />
+    /> -->
+    <div class="card">
+      <header class="card-content content">
+        <h1 class="is-title">
+          {{account.name}}
+        </h1>
+      </header>
+
+    </div><!-- .card -->
+
     <div class="tabs">
       <ul>
         <!-- <li class="is-active"><a>Children</a></li> -->

@@ -1,46 +1,10 @@
 // Import Bulma's core
 @import "../../node_modules/bulma/sass/utilities/_all";
+@import "bulma_variables";
 
-// Set your colors
-$primary: #3d0240;
-$primary-invert: findColorInvert($primary);
-$twitter: #4099FF;
-$twitter-invert: findColorInvert($twitter);
-$light: #b7b7b7;
-$light-invert: findColorInvert($light);
-
-// Setup $colors to use as bulma classes (e.g. 'is-twitter')
-$colors: (
-    "white": ($white, $black),
-    "black": ($black, $white),
-    "light": ($light, $light-invert),
-    "dark": ($dark, $dark-invert),
-    "primary": ($primary, $primary-invert),
-    "info": ($info, $info-invert),
-    "success": ($success, $success-invert),
-    "warning": ($warning, $warning-invert),
-    "danger": ($danger, $danger-invert),
-    "twitter": ($twitter, $twitter-invert)
-);
-
-// Links
-$link: $primary;
-$link-invert: $primary-invert;
-$link-focus-border: $primary;
-
-
-// Menu
-
-$menu-item-color: $primary;
-$menu-item-hover-background-color: $primary;
-$menu-item-hover-color: $white;
-
-// Typography
-$family-monospace: 'Space Mono', 'PT Mono', monospace;
-$radius: $radius-small;
 
 // Import Bulma and Buefy styles
-// @import "logo";
+@import "logo";
 @import "forms";
 @import "sidebar";
 @import "shame";

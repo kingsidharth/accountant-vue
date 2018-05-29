@@ -37,7 +37,7 @@ export default {
 
   methods: {
     see_account_details: function(id) {
-      this.$router.push({ name: 'account', params: { id: id }})
+      this.$router.push(this.go_to.accounts(id))
     },
 
     add_account: function(e) {

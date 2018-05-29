@@ -53,12 +53,12 @@ const mutations = {
 }
 
 const actions = {
-  modal_toggle(context, content) {
+  modal_open(context, content) {
     context.commit('modal_toggle', content)
   },
 
   modal_close(context) {
-    context.commit('modal_close')
+    context.commit('modal_toggle')
   },
 
   sidebar_toggle(context) {

@@ -1,0 +1,46 @@
+
+// Set your colors
+$primary: #1C3B56;
+$primary-invert: findColorInvert($primary);
+
+$light: #F1FAEE;
+$light-invert: findColorInvert($light);
+
+// Palatte
+$red: #FF6B6B;
+$green: #4ECDC4;
+$yellow: #FFE66D;
+$danger: $red;
+
+$black: #292F36;
+
+// Setup $colors to use as bulma classes (e.g. 'is-twitter')
+$colors: (
+    "white": ($white, $black),
+    "black": ($black, $white),
+    "light": ($light, $light-invert),
+    "dark": ($dark, $dark-invert),
+    "primary": ($primary, $primary-invert),
+    "info": ($info, $info-invert),
+    "success": ($success, $success-invert),
+    "warning": ($warning, $warning-invert),
+    "danger": ($danger, $danger-invert),
+);
+
+// Links
+$link: $primary;
+$link-invert: $primary-invert;
+$link-focus-border: $primary;
+
+
+// Menu
+
+$menu-item-color: $green;
+$menu-item-hover-background-color: $green;
+$menu-item-hover-color: $white;
+
+// Typography
+$family-sans-serif: 'PT Sans', 'Roboto', system-ui, sans-serif;
+$family-monospace: 'Space Mono', 'PT Mono', monospace;
+$radius: $radius-small;
+$family-primary: $family-sans-serif;

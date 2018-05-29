@@ -1,6 +1,6 @@
 <template>
   <div class="transactions transactions--list">
-    <table v-if="transactions.length > 0" class="table" ref="transactions_table">
+    <table v-if="transactions" class="table is-striped is-hoverable" ref="transactions_table">
       <!-- content added via d3 -->
     </table>
     <div class="notification is-light" v-else>
@@ -12,12 +12,13 @@
 <script>
 import { map, forEach, find } from 'lodash'
 import moment from 'moment'
+import numeral from 'numeral'
 
 moment.locale('in')
 
 export default {
   name: 'transactions-list',
-  props: ['transactions', 'account_id'],
+  // props: ['transactions', 'account_id'],
   data: function() {
     return {
       headers: [
@@ -57,6 +58,19 @@ export default {
     this.get_transactions_table()
   },
 
+  computed: {
+    account_id: function() { return parseInt(this.$route.params.id) },
+    transactions: function() {
+      return this.$store.getters.get_account_transactions(this.account_id)
+    },
+  },
+
+  watch: {
+    '$route' (to, from) {
+      this.get_transactions_table()
+    },
+  },
+
   methods: {
     edit_transaction(id) {
       console.log('Intent: Edit transaction ' + id);
@@ -73,14 +87,14 @@ export default {
       const headers = this.headers
       const header_keys = map(headers, 'id')
 
-      const table = d3.select(this.$refs.transactions_table)
-      const table_head = table.append('thead')
+      const table = this.table = d3.select(this.$refs.transactions_table).html("")
+      const table_head = this.table_head = table.append('thead')
         .append('tr')
         .selectAll('tr')
         .data(headers)
           .enter().append('th').text((d)=>{ return d.label })
 
-      const table_body = table.append('tbody')
+      const table_body = this.table_body = table.append('tbody')
       const table_rows = table_body.selectAll('tr')
                           .data(transactions)
                             .enter().append('tr')
@@ -113,8 +127,11 @@ export default {
       /*
         amounts:Array of Amount objects, account_id:Integer => { credit: 0, debit: 0 }
       */
-      let credit = find(amounts, { account_id: account_id, is_credit: true }) || { amount: parseInt(0) }
-      let debit = find(amounts, { account_id: account_id, is_credit: false }) || { amount: parseInt(0) }
+      let credit = find(amounts, { account_id: account_id, is_credit: true }) || { amount: 0.00 }
+      let debit = find(amounts, { account_id: account_id, is_credit: false }) || { amount: 0.00 }
+
+      credit.amount = numeral(credit.amount).format('0,0.00')
+      debit.amount = numeral(debit.amount).format('0,0.00')
 
       return {
         credit,

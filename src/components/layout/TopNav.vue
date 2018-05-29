@@ -24,14 +24,16 @@
 
 export default {
   props: ['name', 'title'],
-  data: function() {
-    return {}
-  },
+
   methods: {
     handle_click: function() {
-      this.$store.dispatch('modal_toggle')
+      this.$store.dispatch('modal_open', this.view)
     }
-  }
+  },
+
+  computed: {
+    view: function() { return this.$route.name }
+  },
 }
 
 </script>

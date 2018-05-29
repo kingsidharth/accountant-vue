@@ -28,7 +28,3 @@
 const state = {
   view: {},
 }
-
-const mutations = {
-  view_change(state, payload)
-}

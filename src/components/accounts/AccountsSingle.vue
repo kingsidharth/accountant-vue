@@ -1,15 +1,41 @@
 <template>
   <div class="c-accounts c-accounts--single" v-if="account">
-    <!-- <Hero
-      v-bind:title="account.name"
-    /> -->
-    <div class="card">
-      <header class="card-content content">
-        <h1 class="is-title">
-          {{account.name}}
-        </h1>
-      </header>
+    <div class="card is-shadowless">
+      <div class="card-content content">
+        <nav class="breadcrumb has-arrow-separator is-small is-marginless" aria-label="breadcrumbs">
+          <ul class="is-marginless">
+            <li><router-link to="/accounts">Accounts</router-link></li>
+            <li v-for="p in get_parent_breadcrumbs()" >
+              <a href="#" @click="breadcrumb_click(p.id)">{{ p.name }}</a>
+            </li>
+            <li class="is-active"><a href="#" aria-current="page">{{ account.name }}</a></li>
+          </ul>
+        </nav>
 
+        <h1 class="is-title is-1" style="margin: 0.5em 0em; line-height: 1em;">
+          {{ account.name }}
+        </h1>
+
+        <div class="columns stats-counter">
+          <div class="stats column is-2">
+            <h2 class="is-title mono is-marginless has-text-primary	">
+              {{ format.financial( account.balance ) }}
+            </h2>
+            <span class="heading">Balance</span>
+          </div>
+          <Stats class="column is-2"
+            v-bind:number="account.children ? account.children.length : 0"
+            title="Children"
+          />
+          <!-- <div v-if="account.children.length > 0" class="stats column is-2">
+            <h2 class="is-title mono is-marginless has-text-primary	">
+              {{ account.children.length }}
+            </h2>
+            <span class="heading">Children</span>
+          </div> -->
+        </div>
+
+      </div>
     </div><!-- .card -->
 
     <div class="tabs">
@@ -32,6 +58,13 @@
       />
     </div>
 
+    <div class="content" v-show="tab_active_check('children')" refs="children">
+      <accounts-tree
+        childComponent="AccountsChildTree"
+        v-bind:accounts="account.children"
+      />
+    </div>
+
     <div v-show="tab_active_check('transactions')" ref="transactions">
       <TransactionsList
         v-bind:transactions="transactions"
@@ -44,10 +77,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { pick, union } from 'lodash'
 
-import Hero from '../layout/Hero.vue'
 import AccountsMeta from './AccountsMeta.vue'
+import Stats from '../common/Stats.vue'
 import TransactionsList from '../transactions/TransactionsList.vue'
+import AccountsChildTree from './AccountsChildTree.vue'
 
 // Mount with minimal data expectations
 // Check if details are available
@@ -60,7 +95,7 @@ export default {
   data: function() {
     return {
       tabs: {
-        active: 'meta',
+        active: 'transactions',
         data: {
           meta: {
             refs: 'meta',
@@ -90,15 +125,16 @@ export default {
     account: function() {
       return this.$store.getters.account_get_details(this.account_id)
     },
-    transactions: function () {
+
+    transactions: function() {
       return this.$store.getters.get_account_transactions(this.account_id)
-    }
+    },
   },
 
   watch: {
     '$route' (to, from) {
-      console.log(to);
-    }
+      this.$store.dispatch('account_get_details', this.account_id)
+    },
   },
 
   methods: {
@@ -108,13 +144,48 @@ export default {
 
     tab_active_check: function(name) {
       return this.tabs.active === name
-    }
+    },
+
+    flatten_parent_tree: function(parent) {
+      /*
+        params
+        - parent:Object
+          - id: Integer
+          - name: String
+          - parent: Object or null
+        =>
+        array of parent objects, immidiate parent first.
+      */
+      let parents = []
+
+      const parent_obj = pick(parent, ['id', 'name'])
+      parents.push(parent_obj)
+
+      if (parent.parent != null) {
+        parents = union(parents, this.flatten_parent_tree(parent.parent))
+      }
+
+      return parents
+    },
+
+    get_parent_breadcrumbs: function() {
+      const parent = this.account.parent
+      if (!!parent) {
+        return this.flatten_parent_tree(parent).reverse()
+      } else {
+        return []
+      }
+    },
+
+    breadcrumb_click: function(id) {
+      this.$router.push({ name: 'account', params: { id: id }})
+    },
   },
 
   components: {
-    Hero,
     AccountsMeta,
-    TransactionsList
+    Stats,
+    TransactionsList,
   }
 }
 </script>

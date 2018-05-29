@@ -3,14 +3,16 @@
   <div class="card">
     <form ref="form" @submit="handle_submit">
     <div class="card-header">
-      <h1 class="card-header-title">Add/Edit Account</h1>
+      <span class="card-header-title">Add/Edit Account</span>
     </div>
     <div class="card-content">
         <vue-form-generator :schema="schema" :model="model" :options="formOptions" >
         </vue-form-generator>
     </div>
     <footer class="card-footer">
-      <a href="#" class="card-footer-item" @click="handle_submit">Add</a>
+      <div class="card-footer-item">
+        <button class="button is-primary" @click="handle_submit">Add</button>
+      </div>
     </footer>
     </form>
   </div><!-- .card.account_from -->
@@ -21,7 +23,7 @@ import VueFormGenerator from 'vue-form-generator'
 
 export default {
   data: function() {
-    let accounts = this.$store.state.accounts.accounts
+    let accounts = this.$store.state.accounts.data
     let select_accounts = []
     for (var i = 0; i < accounts.length; i++) {
       const a = accounts[i]

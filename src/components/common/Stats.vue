@@ -1,8 +1,8 @@
 <template>
   <div class="stats">
-    <h2 class="is-title mono is-marginless has-text-primary	">
+    <h3 v-bind:class="[(numberClass ? numberClass : 'has-text-info'), 'is-title mono is-marginless' ]">
       {{ number }}
-    </h2>
+    </h3>
     <span class="heading">{{ title }}</span>
   </div>
 </template>
@@ -10,6 +10,6 @@
 <script>
 export default {
   name: 'stats',
-  props: ['number', 'title']
+  props: ['number', 'title', 'numberClass']
 }
 </script>

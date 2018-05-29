@@ -12,12 +12,18 @@ $green: #4ECDC4;
 $yellow: #FFE66D;
 $danger: $red;
 
-$black: #292F36;
+$black: #273534;
+
+// Links
+$link: $green;
+$link-invert: $green-invert;
+$link-focus-border: none;
 
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: (
     "white": ($white, $black),
     "black": ($black, $white),
+    "link": ($link, $green-invert),
     "light": ($light, $light-invert),
     "dark": ($dark, $dark-invert),
     "primary": ($primary, $primary-invert),
@@ -27,10 +33,6 @@ $colors: (
     "danger": ($danger, $danger-invert),
 );
 
-// Links
-$link: $primary;
-$link-invert: $primary-invert;
-$link-focus-border: $primary;
 
 
 // Menu
@@ -44,3 +46,14 @@ $family-sans-serif: 'PT Sans', 'Roboto', system-ui, sans-serif;
 $family-monospace: 'Space Mono', 'PT Mono', monospace;
 $radius: $radius-small;
 $family-primary: $family-sans-serif;
+$text: $primary;
+
+
+// Tabs
+$tabs-link-color: $link;
+$tabs-link-active-border-bottom-color: $text;
+$tabs-link-active-color: $text;
+
+
+// Section
+$section-padding: 1.5rem 1.5rem;

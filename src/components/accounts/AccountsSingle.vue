@@ -17,60 +17,57 @@
         </h1>
 
         <div class="columns stats-counter">
-          <div class="stats column is-2">
-            <h2 class="is-title mono is-marginless has-text-primary	">
-              {{ format.financial( account.balance ) }}
-            </h2>
-            <span class="heading">Balance</span>
-          </div>
+          <Stats class="column is-2"
+            v-bind:number="format.financial(account.balance)"
+            title="Balance"
+            numberClass="has-text-grey"
+          />
           <Stats class="column is-2"
             v-bind:number="account.children ? account.children.length : 0"
             title="Children"
+            numberClass="has-text-grey"
           />
-          <!-- <div v-if="account.children.length > 0" class="stats column is-2">
-            <h2 class="is-title mono is-marginless has-text-primary	">
-              {{ account.children.length }}
-            </h2>
-            <span class="heading">Children</span>
-          </div> -->
         </div>
 
       </div>
     </div><!-- .card -->
 
-    <div class="tabs">
-      <ul>
-        <!-- <li class="is-active"><a>Children</a></li> -->
-        <li v-for="t in tabs.data" :class="{ 'is-active': tab_active_check(t.refs) }">
-          <a href="#" @click.stop.prevent="tab_switch(t.refs)">
-            {{ t.text }}
-          </a>
-        </li>
-      </ul>
-    </div><!-- .tabs -->
+    <section class="section">
+      <div class="tabs">
+        <ul>
+          <!-- <li class="is-active"><a>Children</a></li> -->
+          <li v-for="t in tabs.data" :class="{ 'is-active': tab_active_check(t.refs) }">
+            <a href="#" @click.stop.prevent="tab_switch(t.refs)">
+              {{ t.text }}
+            </a>
+          </li>
+        </ul>
+      </div><!-- .tabs -->
 
-    <div class="" v-show="tab_active_check('meta')" refs="meta">
-      <AccountsMeta
-        v-bind:name="account.name"
-        v-bind:created_at="account.created_at"
-        v-bind:children="account.children"
-        v-bind:parent="account.parent"
-      />
-    </div>
+      <div class="" v-show="tab_active_check('meta')" refs="meta">
+        <AccountsMeta
+          v-bind:name="account.name"
+          v-bind:created_at="account.created_at"
+          v-bind:children="account.children"
+          v-bind:parent="account.parent"
+        />
+      </div>
 
-    <div class="content" v-show="tab_active_check('children')" refs="children">
-      <accounts-tree
-        childComponent="AccountsChildTree"
-        v-bind:accounts="account.children"
-      />
-    </div>
+      <div class="content" v-show="tab_active_check('children')" refs="children">
+        <accounts-tree
+          childComponent="AccountsChildTree"
+          v-bind:accounts="account.children"
+        />
+      </div>
 
-    <div v-show="tab_active_check('transactions')" ref="transactions">
-      <TransactionsList
-        v-bind:transactions="transactions"
-        v-bind:account_id="account.id"
-      />
-    </div>
+      <div v-show="tab_active_check('transactions')" ref="transactions">
+        <TransactionsList
+          v-bind:transactions="transactions"
+          v-bind:account_id="account.id"
+        />
+      </div>
+    </section>
+
   </div><!-- if(account) -->
 
 </template>

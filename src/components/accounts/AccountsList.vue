@@ -1,17 +1,23 @@
 <template>
   <div>
-    <button class="button" @click="add_account">Add Account</button>
     <ul v-if="accounts.length > 0">
-      <li v-for="a in accounts" :key="'account-' + a.id" class="card" @click="see_account_details(a.id)">
+      <li v-for="a in accounts" :key="'account-' + a.id" class="card is-hoverable" @click="see_account_details(a.id)">
         <div class="card-content columns is-gapless is-clickable">
-          <div class="column is-3">
-            {{ a.name }}
+          <div class="column is-2">
+            <span class="has-text-link">{{ a.name }}</span>
           </div>
-          <div class="column is-3">
-            {{ a.balance }}
+          <div class="column is-2 has-text-right mono has-text-grey">
+            {{ format.financial(a.balance) }}
           </div>
-          <div class="column" v-if="a.detailed">
-            <router-link to="/transactions">Transactions</router-link>
+          <div class="column has-text-right">
+              <a href="#" class="button is-small is-success is-inverted">
+                <b-icon pack="mdi" icon="plus" size="is-small"></b-icon>
+                Sub-Account
+              </a>
+              <router-link class="button is-small is-success" to="/transactions">
+                <b-icon pack="mdi" icon="plus" size="is-small"></b-icon>
+                Transactions
+              </router-link>
           </div>
         </div>
       </li>

@@ -59,12 +59,13 @@ const actions = {
     })
   },
 
-  account_get_details: async (context, id) => {
+  account_get_details: async (context, { id, force }) => {
+    force = force || false
     const data = context.state.data
     let detailed_known_ids = await map(filter(data, 'detailed'), 'id')
     const is_account_known = includes(detailed_known_ids, id) || false
 
-    if(!is_account_known) {
+    if(!is_account_known || !!force) {
       const account_endpoint = endpoint + id + '/'
       return await api.request(account_endpoint).then(({ data }) => {
         context.commit('accounts_remote_updated', [{ ...data, detailed: true }])

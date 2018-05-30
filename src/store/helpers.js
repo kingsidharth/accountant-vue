@@ -11,7 +11,7 @@ export const update_resource = function(local_list, payload_list) {
       if (local_list[local_index].detailed != true) {
         // Update if State data is not detailed
         local_list.splice(local_index, 1, entity)
-      } else if (local_list[local_index].detailed == true && entity.detailed == true) {
+      } else if (local_list[local_index].detailed === true && entity.detailed === true) {
         // Update if State data is detailed but so is payload data
         local_list.splice(local_index, 1, entity)
       }

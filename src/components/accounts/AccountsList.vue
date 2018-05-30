@@ -10,11 +10,11 @@
             {{ format.financial(a.balance) }}
           </div>
           <div class="column has-text-right">
-              <a href="#" class="button is-small is-success is-inverted">
+              <a href="#" class="button is-small is-link is-inverted">
                 <b-icon pack="mdi" icon="plus" size="is-small"></b-icon>
                 Sub-Account
               </a>
-              <router-link class="button is-small is-success" to="/transactions">
+              <router-link class="button is-small is-link" to="/transactions">
                 <b-icon pack="mdi" icon="plus" size="is-small"></b-icon>
                 Transactions
               </router-link>

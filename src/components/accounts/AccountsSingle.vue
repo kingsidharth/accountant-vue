@@ -113,7 +113,7 @@ export default {
 
   mounted: function() {
     if (this.account_id) {
-      this.$store.dispatch('account_get_details', this.account_id)
+      this.$store.dispatch('account_get_details', { id: this.account_id })
     }
   },
 
@@ -130,7 +130,7 @@ export default {
 
   watch: {
     '$route' (to, from) {
-      this.$store.dispatch('account_get_details', this.account_id)
+      this.$store.dispatch('account_get_details', { id: this.account_id })
     },
   },
 

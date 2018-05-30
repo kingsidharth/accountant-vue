@@ -35,12 +35,12 @@ export default {
           label: 'Description'
         },
         {
-          id: 'credit',
-          label: 'Credits'
-        },
-        {
           id: 'debit',
           label: 'Debits'
+        },
+        {
+          id: 'credit',
+          label: 'Credits'
         },
         {
           id: 'cumm',
@@ -67,6 +67,10 @@ export default {
 
   watch: {
     '$route' (to, from) {
+      this.get_transactions_table()
+    },
+
+    'transactions' () {
       this.get_transactions_table()
     },
   },

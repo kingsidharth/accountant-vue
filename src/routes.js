@@ -3,7 +3,7 @@ import AccountsSingle from './components/accounts/AccountsSingle.vue'
 import AccountsCreate from './components/accounts/AccountsCreate.vue'
 
 import TransactionsList from './components/transactions/TransactionsList.vue'
-
+import TransactionsCreate from './components/transactions/TransactionsCreate.vue'
 
 export default [
   {
@@ -19,7 +19,7 @@ export default [
     path: '/account/:id',
     components: {
       default: AccountsSingle,
-      modal: AccountsCreate
+      modal: TransactionsCreate
     }
   },
   {
@@ -27,7 +27,7 @@ export default [
     path: '/transactions',
     components: {
       default: TransactionsList,
-      modal: AccountsCreate
+      modal: TransactionsCreate
     }
   }
 ]

@@ -8,6 +8,9 @@
       </accounts-tree>
     </li>
   </ul>
+  <div class="notification has-text-center" v-else>
+    No children accounts. Add one.
+  </div>
 </template>
 
 <script>

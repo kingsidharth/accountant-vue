@@ -1,19 +1,19 @@
 <template>
 
-  <div class="card">
-    <form ref="form" @submit="handle_submit">
-    <div class="card-header">
-      <span class="card-header-title">Add/Edit Account</span>
-    </div>
-    <div class="card-content">
-        <vue-form-generator :schema="schema" :model="model" :options="formOptions" >
-        </vue-form-generator>
-    </div>
-    <footer class="card-footer">
-      <div class="card-footer-item">
-        <button class="button is-primary" @click="handle_submit">Add</button>
+  <div class="card accounts--create">
+    <form ref="form" @submit.stop="handle_submit">
+      <div class="card-header">
+        <span class="card-header-title">Add/Edit Account</span>
       </div>
-    </footer>
+      <div class="card-content">
+          <vue-form-generator :schema="schema" :model="model" :options="formOptions" >
+          </vue-form-generator>
+      </div>
+      <footer class="card-footer">
+        <div class="card-footer-item">
+          <input type="submit" class="button is-primary" value="Save"/>
+        </div>
+      </footer>
     </form>
   </div><!-- .card.account_from -->
 </template>

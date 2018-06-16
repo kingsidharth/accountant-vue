@@ -1,16 +1,20 @@
 <template>
   <nav class="navbar is-black" role="navigation" aria-label="main navigation">
-    <div class="navbar-start">
-      <a class="navbar-item" href="#">
-        <b-icon icon="menu mdi-light"></b-icon>
-      </a>
-    </div>
-
     <div class="navbar-brand">
       <a id="logo" class="navbar-item" href="/" v-bind:title='title'>
+        <b-icon icon="google-circles-group mdi-light"> </b-icon>
         {{name}}
       </a>
-    </div>
+    </div><!-- .navbar-brand -->
+
+    <div class="navbar-menu">
+      <router-link class="navbar-item" to="/accounts">Accounts</router-link>
+      <router-link class="navbar-item" to="/transactions">Transactions</router-link>
+    </div><!-- .navbar-menu -->
+
+    <!-- <div class="navbar-brand">
+
+    </div> -->
 
     <div class="navbar-end">
       <a class="navbar-item" href="#" @click.prevent="handle_click">
@@ -27,7 +31,7 @@ export default {
 
   methods: {
     handle_click: function() {
-      this.$store.dispatch('modal_open', this.view)
+      this.$store.dispatch('modal_open')
     }
   },
 

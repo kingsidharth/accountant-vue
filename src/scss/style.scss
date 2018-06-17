@@ -1,6 +1,7 @@
 // Import Bulma's core
 @import "../../node_modules/bulma/sass/utilities/_all";
 @import "bulma_variables";
+// @import "mdi_variables";
 
 
 // Import Bulma and Buefy styles
@@ -8,7 +9,6 @@
 @import "forms";
 @import "sidebar";
 @import "shame";
-@import "mdi_variables";
 @import "../../node_modules/mdi/scss/materialdesignicons";
 @import "../../node_modules/bulma/bulma";
 @import "../../node_modules/buefy/src/scss/buefy";

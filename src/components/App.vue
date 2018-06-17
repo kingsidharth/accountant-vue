@@ -16,11 +16,7 @@
       </div>
     </div>
 
-    <b-modal :active.sync="modal.active" :width="640" scroll="keep">
-      <div v-if="modal.content" class="content">
-        <router-view name="modal"></router-view>
-      </div>
-    </b-modal>
+    <Modal/>
   </div>
 </template>
 
@@ -28,6 +24,7 @@
 import TopNav from './layout/TopNav.vue'
 import Hero from './layout/Hero.vue'
 import Sidebar from './layout/Sidebar.vue'
+import Modal from './layout/Modal.vue'
 
 export default {
   name: 'app',
@@ -48,6 +45,7 @@ export default {
     TopNav,
     Hero,
     Sidebar,
+    Modal,
   },
 
 }

@@ -4,7 +4,7 @@
       General
     </p>
     <ul class="menu-list">
-      <li><router-link to="/">Dashboard</router-link></li>
+      <!-- <li><router-link to="/">Dashboard</router-link></li> -->
       <li><router-link to="/accounts">Accounts</router-link></li>
       <li><router-link to="/transactions">Transactions</router-link></li>
     </ul>

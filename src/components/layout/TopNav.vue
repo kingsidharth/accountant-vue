@@ -31,12 +31,22 @@ export default {
 
   methods: {
     handle_click: function() {
-      this.$store.dispatch('modal_open')
+      let type = this.view;
+      this.$store.dispatch('intent_create', { type })
     }
   },
 
   computed: {
-    view: function() { return this.$route.name }
+    view: function() {
+      const route_name = this.$route.name
+      if (route_name === 'account' || 'accounts') {
+        return 'accounts'
+      } else if (route_name === 'transaction' || 'transactions') {
+        return 'transactions'
+      } else {
+        return route_name
+      }
+    }
   },
 }
 

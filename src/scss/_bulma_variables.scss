@@ -1,22 +1,25 @@
 
+
+// Palatte
+$red: #FF3860;
+$green: #47ED27;
+$yellow: #FFF757;
+$blue: #44CBF4;
+$black: #171B1B;
+
+
 // Set your colors
-$primary: #1C3B56;
+$primary: #19C4B4;
 $primary-invert: findColorInvert($primary);
 
 $light: #F1FAEE;
 $light-invert: findColorInvert($light);
-
-// Palatte
-$red: #FF6B6B;
-$green: #4ECDC4;
-$yellow: #FFE66D;
 $danger: $red;
 
-$black: #273534;
 
 // Links
-$link: $green;
-$link-invert: $green-invert;
+$link: $primary;
+$link-invert: findColorInvert($link);
 $link-focus-border: none;
 
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
@@ -37,8 +40,8 @@ $colors: (
 
 // Menu
 
-$menu-item-color: $green;
-$menu-item-hover-background-color: $green;
+$menu-item-color: $link;
+$menu-item-hover-background-color: $link;
 $menu-item-hover-color: $white;
 
 // Typography
@@ -46,7 +49,7 @@ $family-sans-serif: 'PT Sans', 'Roboto', system-ui, sans-serif;
 $family-monospace: 'Space Mono', 'PT Mono', monospace;
 $radius: $radius-small;
 $family-primary: $family-sans-serif;
-$text: $primary;
+$text: $dark;
 
 
 // Tabs
@@ -54,6 +57,22 @@ $tabs-link-color: $link;
 $tabs-link-active-border-bottom-color: $text;
 $tabs-link-active-color: $text;
 
-
 // Section
 $section-padding: 1.5rem 1.5rem;
+
+
+// Navbar
+
+$navbar-height: 3.5rem;
+$navbar-item-color: $light;
+$navbar-item-hover-color: $link;
+$navbar-item-hover-background-color: $black;
+$navbar-item-active-color: $link;
+
+
+
+//
+
+.router-link-active {
+  @extend .is-active;
+}

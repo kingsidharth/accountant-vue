@@ -75,10 +75,21 @@ const actions = {
 
   account_create: async (context, accounts) => {
     return await api.request(endpoint, accounts, 'POST')
-              .then(({data, errors}) => {
-                context.commit('accounts_remote_updated', data)
-                context.dispatch('modal_close')
-              })
+                .then(({ data }) => {
+                  context.commit('accounts_remote_updated', data)
+                  context.dispatch('modal_close')
+                })
+  },
+
+  account_edit: async (context, account) => {
+    const id = account.id
+    const account_endpoint = endpoint + id + '/'
+
+    return await api.request(account_endpoint, account, 'PUT')
+                .then(({ data }) => {
+                  context.commit('accounts_remote_updated', data)
+                  context.dispatch('modal_close')
+                })
   },
 }
 

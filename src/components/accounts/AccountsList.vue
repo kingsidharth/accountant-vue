@@ -10,12 +10,16 @@
             {{ format.financial(a.balance) }}
           </div>
           <div class="column has-text-right">
+              <a href="#" class="button is-small is-link is-inverted" @click.stop.prevent="edit_account(a.id)">
+                <b-icon pack="mdi" icon="pencil-box-outline" size="is-small"></b-icon>
+                Edit
+              </a>
               <a href="#" class="button is-small is-link is-inverted">
-                <b-icon pack="mdi" icon="plus" size="is-small"></b-icon>
+                <b-icon pack="mdi" icon="plus-box-outline" size="is-small"></b-icon>
                 Sub-Account
               </a>
               <router-link class="button is-small is-link" to="/transactions">
-                <b-icon pack="mdi" icon="plus" size="is-small"></b-icon>
+                <b-icon pack="mdi" icon="playlist-plus" size="is-small"></b-icon>
                 Transactions
               </router-link>
           </div>
@@ -46,8 +50,15 @@ export default {
       this.$router.push(this.go_to.accounts(id))
     },
 
-    add_account: function(e) {
-      this.$store.dispatch('modal_toggle', AccountsCreate)
+    add_account: function() {
+      this.$store.dispatch('intent_create', { type: 'accounts' })
+    },
+
+    edit_account: async function(id) {
+      await this.$store.dispatch('intent_edit', {
+        type: 'accounts',
+        id: id
+      })
     },
 
   },

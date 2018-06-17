@@ -1,17 +1,26 @@
 <template>
 
   <div class="card accounts--create">
-    <form ref="form" @submit.stop="handle_submit">
+    <form ref="form" @submit.stop.prevent="handle_submit">
       <div class="card-header">
-        <span class="card-header-title">Add/Edit Account</span>
+        <span class="card-header-title">{{ is_editing ? 'Edit' : 'New' }} Account</span>
       </div>
+
       <div class="card-content">
-          <vue-form-generator :schema="schema" :model="model" :options="formOptions" >
-          </vue-form-generator>
+
+        <AccountsCreateForm
+          ref="form"
+          v-bind:id="model.id"
+          v-bind:name="model.name"
+          v-bind:parent_id="model.parent_id"
+          v-bind:accounts="get_select_accounts()"
+          v-bind:errors="errors"
+        />
       </div>
+
       <footer class="card-footer">
         <div class="card-footer-item">
-          <input type="submit" class="button is-primary" value="Save"/>
+          <input type="submit" class="button is-primary" :value="(is_editing ? 'Update' : 'Create') + ' Account'"/>
         </div>
       </footer>
     </form>
@@ -19,74 +28,133 @@
 </template>
 
 <script>
-import VueFormGenerator from 'vue-form-generator'
+// import VueFormGenerator from 'vue-form-generator'
+import { includes, find, indexOf, assign, isString } from 'lodash'
+import validate from 'validate.js'
+
+import accounts_model from './model'
+import AccountsCreateForm from './AccountsCreateForm.vue'
 
 export default {
+  name: 'accounts-create',
   data: function() {
-    let accounts = this.$store.state.accounts.data
-    let select_accounts = []
-    for (var i = 0; i < accounts.length; i++) {
-      const a = accounts[i]
-      select_accounts.push({
-        "id": a.id,
-        "name": a.name
-      })
-    }
-
     return {
       model: {
-        name: "",
-        parent_id: null
+        id: null,
+        name: null,
+        parent_id: null,
       },
-      schema: {
-        fields: [
-          {
-            type: "input",
-            inputType: "text",
-            label: "Name",
-            model: "name",
-            readonly: false,
-            required: true,
-            placeholder: "Account name",
-            styleClasses: ['field'],
-            hint: '',
-            validator: VueFormGenerator.validators.string
-          },
-          {
-            type: "select",
-            label: "Parent",
-            model: "parent_id",
-            required: true,
-            hint: '',
-            validator: VueFormGenerator.validators.number,
-            values: select_accounts
-          },
-        ],
-      },
-      formOptions: {
-        validateAfterLoad: false,
-        validateAfterChanged: true,
-        validationErrorClass: "is-danger",
-        validationSuccessClass: "is-success"
-      }
+      select_accounts: null,
+      errors: null
     }
   },
-  methods: {
-    handle_submit: function() {
-      const name = this.$data.model.name
-      const parent_id = this.$data.model.parent_id || null
 
-      if (!name) {
-        console.error('name is require to create an Account');
-      }
+  computed: {
+    is_editing: function() {
+      return this.$store.getters.is_intent_edit
+    },
 
-      const account = {
-        name,
-        parent_id
-      }
+    is_new: function() {
+      return this.$store.getters.is_intent_create
+    },
 
-      this.$store.dispatch('account_create', account)
+    intent_id: function() {
+      return this.$store.getters.get_intent_id
+    },
+
+    accounts: function() {
+      const accounts = this.$store.getters.accounts_get_all
+
+      return accounts.map(function(a) {
+        return {
+          id: a.id,
+          name: a.name,
+          selected: false
+        }
+      })
     }
-  }
+  },
+
+  mounted: function() {
+    if(this.is_editing) {
+      this.model = this.get_editable_account()
+    }
+  },
+
+  methods: {
+    get_editable_account: function() {
+      return this.$store.getters.account_get_details(this.intent_id)
+    },
+
+    suggestions: function() {
+      let parent_id = false
+      const type = this.$route.name
+
+      if(this.is_new && type === 'account') {
+        const id = this.$route.params.id || false
+        parent_id = !!id ? parseInt(id) : id
+      }
+
+      return {
+        parent_id,
+      }
+    },
+
+    get_select_accounts: function() {
+      let select_accounts = this.accounts
+      const suggestion = this.suggestions().parent_id
+
+      if(this.is_new && !!suggestion) {
+        const i = indexOf(select_accounts, find(select_accounts, { id: suggestion }))
+        select_accounts[i] = assign({}, select_accounts[i], { selected: "selected" })
+        this.model.parent_id = suggestion
+      }
+
+      if(this.is_editing) {
+        const parent_id = this.model.parent_id
+        const i = indexOf(select_accounts, find(select_accounts, { id:  parent_id }))
+        select_accounts[i] = assign({}, select_accounts[i], { selected: "selected" })
+      }
+
+      return select_accounts
+    },
+
+    /* Handle Form Submission */
+    /* NOTE: Might wanna move some partials to external library */
+    get_form_value: function(field_name) {
+      return this.$refs.form.elements[field_name].value
+    },
+
+    validate_form_data: function(data) {
+
+    },
+
+    handle_submit: function(e) {
+      const raw_data = validate.collectFormValues(this.$refs.form)
+      const data = validate.cleanAttributes(raw_data, {
+        id: true,
+        name: true,
+        parent_id: true
+      })
+
+      const errors = validate(data, accounts_model)
+      this.errors = errors
+
+      if (!errors) {
+        if(this.is_new) {
+          this.$store.dispatch('account_create', data)
+        }
+
+        if(this.is_editing) {
+          this.$store.dispatch('account_edit', data)
+        }
+      }
+    },
+
+  },
+
+  components: {
+    AccountsCreateForm,
+  },
 }
 </script>

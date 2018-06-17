@@ -16,7 +16,7 @@ export default [
   },
   {
     name: 'account',
-    path: '/account/:id',
+    path: '/accounts/:id',
     components: {
       default: AccountsSingle,
       modal: TransactionsCreate

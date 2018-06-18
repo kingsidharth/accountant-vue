@@ -4,9 +4,9 @@
     </b-input>
 
     <b-field label="Name" label-for="name"
-      :type="has_error('name') ? 'is-danger' : ''"
-      :message="has_error('name') ? errors.name : null">
-      <b-input :value="name" name="name" placeholder="Account Name" required="true" min="5"></b-input>
+      :type="has_error('name') ? has_error('name').class : ''"
+      :message="has_error('name') ? has_error('name').message : null">
+      <b-input type="text" :value="name" name="name" placeholder="Account Name" required="true" min="5"></b-input>
     </b-field>
 
     <b-field label="Parent Account">
@@ -26,9 +26,11 @@
 </template>
 
 <script>
+import fieldMixin from '../mixins/fields'
 
 export default {
   name: 'accounts-create-form',
+  mixins: [fieldMixin],
   props: {
     id: {
       require: false,
@@ -64,16 +66,6 @@ export default {
     errors: {
       require: false,
       type: Object
-    }
-  },
-
-  methods: {
-    has_error: function(field_name) {
-      if(this.errors) {
-        return !!this.errors[field_name]
-      } else {
-        return false
-      }
     }
   },
 }

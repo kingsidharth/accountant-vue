@@ -1,13 +1,21 @@
 <template>
-  <div class="card transactions--create">
+  <div class="card is-rounded transactions--create">
     <form ref="form" @submit.stop.prevent="handle_submit">
       <div class="card-header">
         <span class="card-header-title">Add/Edit Transaction</span>
       </div>
+
       <div class="card-content">
-        <vue-form-generator :schema="schema" :model="model" :options="formOptions">
-        </vue-form-generator>
+        <TransactionsFormFields
+          v-bind:id="model.id"
+          v-bind:description="model.description"
+          v-bind:amount="model.amount"
+          v-bind:debit_account="model.debit_account"
+          v-bind:credit_account="model.credit_account"
+          v-bind:accounts="get_select_accounts()"
+        />
       </div>
+
       <footer class="card-footer">
         <div class="card-footer-item">
           <input type="submit" class="button is-primary" value="Save"/>
@@ -18,110 +26,100 @@
 </template>
 
 <script>
-import VueFormGenerator from 'vue-form-generator'
 import { map } from 'lodash'
+import validate from 'validate.js'
+
+import transactions_model from './model'
+import TransactionsFormFields from './TransactionsFormFields.vue'
+import formMixin from '../mixins/forms'
 
 export default {
   name: 'transactions-create',
+  mixins: [formMixin],
   data: function() {
-    const accounts = this.$store.state.accounts.data
-    let select_accounts = map(accounts, function(a) { return { id: a.id, name: a.name } })
-
     return {
       model: {
-        description: "",
-        amount: 0,
-        credit: {
-          account_id: null,
-          is_credit: true,
-        },
-        debit: {
-          account_id: null,
-          is_credit: false,
-        },
+        description: null,
+        amount: null,
+        credit_account: null,
+        debit_account: null,
       },
-
-      schema: {
-        fields: [
-          {
-            type: "input",
-            inputType: "number",
-            model: "amount",
-            label: "Amount",
-            required: true,
-            styleClasses: ['field'],
-            step: 0.01
-          },
-          {
-            type: "input",
-            inputType: "text",
-            model: "description",
-            label: "Description",
-            required: true,
-            min: 5,
-            styleClasses: ['field'],
-          },
-          {
-            type: "select",
-            label: "Credit Account",
-            model: "credit.account_id",
-            required: true,
-            hint: '',
-            validator: VueFormGenerator.validators.number,
-            values: select_accounts,
-            styleClasses: ['select field'],
-          },
-          {
-            type: "select",
-            label: "Debit Account",
-            model: "debit.account_id",
-            required: true,
-            hint: '',
-            validator: VueFormGenerator.validators.number,
-            values: select_accounts,
-            styleClasses: ['select field'],
-          },
-        ]
-      },// schema
-
-      formOptions: {
-        validateAfterLoad: false,
-        validateAfterChanged: true,
-        validationErrorClass: "is-danger",
-        validationSuccessClass: "is-success"
-      }
     }
+  },
+
+  mounted: function() {
+
   },
 
   computed: {
     account_id: function() { return parseInt(this.$route.params.id) },
+
+    accounts: function() {
+      const accounts = this.$store.getters.accounts_get_all
+
+      return accounts.map(function(a) {
+        return {
+          id: a.id,
+          name: a.name,
+          selected: false
+        }
+      })
+    },
   },
 
   methods: {
     handle_submit: function(e) {
-      const transaction = this.make_transaction(this.model)
-      this.$store.dispatch('transaction_create', transaction)
+      const raw_data = validate.collectFormValues(this.$refs.form)
+      const data = validate.cleanAttributes(raw_data, {
+        id: true,
+        description: true,
+        amount: true,
+        credit_account: true,
+        debit_account: true,
+      })
+
+      const errors = validate(data, transactions_model)
+      this.errors = errors
+
+      if (!errors) {
+        const transaction = this.get_transaction_object(data)
+        if(this.is_new) {
+          this.$store.dispatch('transaction_create', transaction)
+        }
+
+        if(this.is_editing) {
+          // this.$store.dispatch('transaction_edit', data)
+        }
+      }
     },
 
-    is_account_aware: function() {
-      // => account_id:Integer || false
-      return this.account_id ? this.account_id : false
+    get_select_accounts: function() {
+      return this.accounts
     },
 
-    make_transaction_amounts: function(model) {
-      const credit_obj = model.credit
-      const debit_obj = model.debit
-      let credit_amount = Object.assign({}, credit_obj,  { amount: model.amount })
-      let debit_amount = Object.assign({}, debit_obj,  { amount: model.amount })
-
-      return [credit_amount, debit_amount]
-    },
-
-    make_transaction: function(model) {
-      let transaction = { description: model.description }
-      transaction.amounts = this.make_transaction_amounts(model)
-      return transaction
+    get_transaction_object: function(form_object) {
+      return {
+        id: parseInt(form_object.id) || null,
+        description: form_object.description,
+        amounts: [
+          {
+            account_id: parseInt(form_object.credit_account),
+            is_credit: true,
+            amount: form_object.amount,
+          },
+          {
+            account_id: parseInt(form_object.debit_account),
+            is_credit: false,
+            amount: form_object.amount
+          }
+        ],
+      }
     }
+
+  }, // methods
+
+  components: {
+    TransactionsFormFields,
   },
 }
 </script>

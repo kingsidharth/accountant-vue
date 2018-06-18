@@ -9,7 +9,6 @@
       <div class="card-content">
 
         <AccountsCreateForm
-          ref="form"
           v-bind:id="model.id"
           v-bind:name="model.name"
           v-bind:parent_id="model.parent_id"
@@ -34,9 +33,11 @@ import validate from 'validate.js'
 
 import accounts_model from './model'
 import AccountsCreateForm from './AccountsCreateForm.vue'
+import formMixin from '../mixins/forms'
 
 export default {
   name: 'accounts-create',
+  mixins: [formMixin],
   data: function() {
     return {
       model: {
@@ -50,18 +51,6 @@ export default {
   },
 
   computed: {
-    is_editing: function() {
-      return this.$store.getters.is_intent_edit
-    },
-
-    is_new: function() {
-      return this.$store.getters.is_intent_create
-    },
-
-    intent_id: function() {
-      return this.$store.getters.get_intent_id
-    },
-
     accounts: function() {
       const accounts = this.$store.getters.accounts_get_all
 
@@ -72,7 +61,7 @@ export default {
           selected: false
         }
       })
-    }
+    },
   },
 
   mounted: function() {
@@ -120,16 +109,8 @@ export default {
     },
 
     /* Handle Form Submission */
-    /* NOTE: Might wanna move some partials to external library */
-    get_form_value: function(field_name) {
-      return this.$refs.form.elements[field_name].value
-    },
-
-    validate_form_data: function(data) {
-
-    },
-
     handle_submit: function(e) {
+      /* Side Effects */
       const raw_data = validate.collectFormValues(this.$refs.form)
       const data = validate.cleanAttributes(raw_data, {
         id: true,

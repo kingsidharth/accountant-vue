@@ -31,17 +31,19 @@ export default {
 
   methods: {
     handle_click: function() {
-      let type = this.view;
+      let type = this.type;
       this.$store.dispatch('intent_create', { type })
     }
   },
 
   computed: {
-    view: function() {
+    type: function() {
+
       const route_name = this.$route.name
-      if (route_name === 'account' || 'accounts') {
+
+      if (route_name === 'accounts') { // Accounts List
         return 'accounts'
-      } else if (route_name === 'transaction' || 'transactions') {
+      } else if (route_name === 'account') { // Single Account
         return 'transactions'
       } else {
         return route_name

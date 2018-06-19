@@ -1,6 +1,8 @@
 <template>
   <section>
-    <b-input type="hidden" :value="id" name="id"></b-input>
+    <input type="hidden" :value="id" name="id"></input>
+    <input type="hidden" :value="credit_amount_id" name="credit_amount_id"></input>
+    <input type="hidden" :value="debit_amount_id" name="debit_amount_id"></input>
 
     <div class="columns">
       <div class="column is-6">
@@ -88,6 +90,8 @@ export default {
     amount: {},
     credit_account: {},
     debit_account: {},
+    credit_amount_id: {},
+    debit_amount_id: {},
     accounts: {
       require: true,
       type: Array

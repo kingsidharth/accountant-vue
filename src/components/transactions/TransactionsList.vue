@@ -76,9 +76,6 @@ export default {
   },
 
   methods: {
-    edit_transaction(id) {
-      console.log('Intent: Edit transaction ' + id);
-    },
 
     get_transactions_table: function() {
       const credits_debits_data = this.credits_debits_data
@@ -122,6 +119,10 @@ export default {
                                     return t[k]
                                   }
 
+                                  if (k === 'actions') {
+
+                                  }
+
                                 })
 
                             })
@@ -156,7 +157,11 @@ export default {
     },
 
     handle_cell_click: function(key, prop) {
-      console.log( find(this.transactions, { id: key }) )
+      // find(this.transactions, { id: key }) )
+      this.$store.dispatch('intent_edit', {
+        type: 'transactions',
+        id: key
+      })
     },
 
   },

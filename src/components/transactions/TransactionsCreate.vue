@@ -9,10 +9,12 @@
         <TransactionsFormFields
           v-bind:id="model.id"
           v-bind:description="model.description"
-          v-bind:amount="model.amount"
+          v-bind:amount="get_amount_value(model.amount)"
           v-bind:debit_account="model.debit_account"
           v-bind:credit_account="model.credit_account"
           v-bind:accounts="get_select_accounts()"
+          v-bind:credit_amount_id="model.credit_amount_id"
+          v-bind:debit_amount_id="model.debit_amount_id"
         />
       </div>
 
@@ -26,8 +28,9 @@
 </template>
 
 <script>
-import { map } from 'lodash'
+import { map, assign, pick, find, keys } from 'lodash'
 import validate from 'validate.js'
+import numeral from 'numeral'
 
 import transactions_model from './model'
 import TransactionsFormFields from './TransactionsFormFields.vue'
@@ -39,16 +42,21 @@ export default {
   data: function() {
     return {
       model: {
+        id: null,
         description: null,
         amount: null,
         credit_account: null,
         debit_account: null,
+        credit_amount_id: null,
+        debit_amount_id: null,
       },
     }
   },
 
   mounted: function() {
-
+    if(this.is_editing) {
+      this.model = this.get_editable_transaction()
+    }
   },
 
   computed: {
@@ -65,9 +73,29 @@ export default {
         }
       })
     },
-  },
+  }, // computed
 
   methods: {
+
+    get_amount_value: function(amount) {
+      // process amount string to get value
+      return numeral(amount).value()
+    },
+
+    get_editable_transaction: function() {
+      const data = this.$store.getters.get_transaction_detail(this.intent_id)
+      const credit = find(data.amounts, { is_credit: true })
+      const debit = find(data.amounts,  { is_debit: true })
+
+      return assign({}, pick(data, ['id', 'description']), {
+        amount: credit.amount,
+        credit_account: credit.account_id,
+        debit_account: debit.account_id,
+        credit_amount_id: credit.id,
+        debit_amount_id: debit.id,
+      })
+    }, // methods
+
     handle_submit: function(e) {
       const raw_data = validate.collectFormValues(this.$refs.form)
       const data = validate.cleanAttributes(raw_data, {
@@ -76,6 +104,8 @@ export default {
         amount: true,
         credit_account: true,
         debit_account: true,
+        credit_amount_id: true,
+        debit_amount_id: true,
       })
 
       const errors = validate(data, transactions_model)
@@ -83,12 +113,13 @@ export default {
 
       if (!errors) {
         const transaction = this.get_transaction_object(data)
+
         if(this.is_new) {
           this.$store.dispatch('transaction_create', transaction)
         }
 
         if(this.is_editing) {
-          // this.$store.dispatch('transaction_edit', data)
+          this.$store.dispatch('transaction_edit', transaction)
         }
       }
     },
@@ -98,19 +129,28 @@ export default {
     },
 
     get_transaction_object: function(form_object) {
+      const transaction_id = parseInt(form_object.id) || null
+      const credit_id = parseInt(form_object.credit_amount_id) || null
+      const debit_id = parseInt(form_object.debit_amount_id) || null
+      const credit_account_id = parseInt(form_object.credit_account) || null
+      const debit_account_id = parseInt(form_object.debit_account) || null
+      const amount = form_object.amount || null
+
       return {
-        id: parseInt(form_object.id) || null,
+        id: transaction_id,
         description: form_object.description,
         amounts: [
           {
-            account_id: parseInt(form_object.credit_account),
+            id: credit_id,
+            account_id: credit_account_id,
             is_credit: true,
-            amount: form_object.amount,
+            amount: amount,
           },
           {
-            account_id: parseInt(form_object.debit_account),
+            id: debit_id,
+            account_id: debit_account_id,
             is_credit: false,
-            amount: form_object.amount
+            amount: amount,
           }
         ],
       }
@@ -120,6 +160,6 @@ export default {
 
   components: {
     TransactionsFormFields,
-  },
+  }, // components
 }
 </script>

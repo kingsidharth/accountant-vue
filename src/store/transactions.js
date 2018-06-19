@@ -30,8 +30,14 @@ const mutations = {
 const actions = {
   transactions_remote_get: async function(context) {
     return await api.request(endpoint).then(({data}) => {
-      context.commit('transactions_remote_update', data)
+      return map(data, function(d) {
+        d.detailed = false
+        return  d
+      })
     })
+    .then((data) => {
+      context.commit('transactions_remote_update', data)
+    });
   },
 
   transaction_create: async function(context, transaction) {
@@ -39,23 +45,33 @@ const actions = {
                     .then(({ data, errors }) => {
                       context.commit('transactions_remote_update', data)
                       context.dispatch('modal_close')
-                      return map(flatten(map(data, 'amounts')), 'account_id')
-                    })
-                    .then((affected_accounts) => {
-                      forEach(affected_accounts, (account_id) => {
-                        return context.dispatch('account_get_details', {
-                                                  id: account_id,
-                                                  force: true
-                                                })
-                      })
-                    })
+                      context.dispatch('update_related_accounts', data)
+                    });
+  },
+
+  transaction_edit: async function(context, transaction) {
+    const id = transaction.id
+    const transaction_endpoint = endpoint + id + '/'
+
+    return await api.request(transaction_endpoint, transaction, 'PUT')
+                .then(({ data }) => {
+                  context.commit('transactions_remote_update', data)
+                  context.dispatch('modal_close')
+                  context.dispatch('update_related_accounts', data)
+                });
+  },
+
+  update_related_accounts: async function(context, transactions) {
+    const related_accounts = map(flatten(map(transactions, 'amounts')), 'account_id')
+    forEach(related_accounts, function(id) {
+      context.dispatch('account_get_details', { id: id, force: true })
+    });
   },
 }
 
 const getters = {
   get_account_transactions: (state) => (account_id) => {
-    let data = state.data
-
+    const data = state.data
     return filter(data, function(d) {
       if ( filter(d.amounts, { account_id: account_id }).length > 0) {
         return d
@@ -63,6 +79,11 @@ const getters = {
         return false
       }
     })
+  },
+
+  get_transaction_detail: (state) => (transaction_id) => {
+    const data = state.data
+    return find(data, ['id', parseInt(transaction_id)])
   },
 }
 

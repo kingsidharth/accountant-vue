@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import Buefy from 'buefy'
-import VueFormGenerator from 'vue-form-generator'
 import VueRouter from 'vue-router'
 import VueD3 from 'vue-d3'
 
@@ -13,7 +12,6 @@ import routes from './routes'
 import AccountsChildTree from './components/accounts/AccountsChildTree.vue'
 
 Vue.use(Buefy)
-Vue.use(VueFormGenerator)
 Vue.use(VueRouter)
 Vue.use(VueD3)
 
@@ -29,8 +27,6 @@ Vue.mixin({
 })
 
 Vue.component('accounts-tree', AccountsChildTree)
-
-
 
 new Vue({
   el: '#app',

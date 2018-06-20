@@ -63,15 +63,7 @@ export default {
     account_id: function() { return parseInt(this.$route.params.id) },
 
     accounts: function() {
-      const accounts = this.$store.getters.accounts_get_all
-
-      return accounts.map(function(a) {
-        return {
-          id: a.id,
-          name: a.name,
-          selected: false
-        }
-      })
+      return this.$store.getters.accounts_get_all_summary
     },
   }, // computed
 
@@ -89,8 +81,8 @@ export default {
 
       return assign({}, pick(data, ['id', 'description']), {
         amount: credit.amount,
-        credit_account: credit.account_id,
-        debit_account: debit.account_id,
+        credit_account: credit.account,
+        debit_account: debit.account,
         credit_amount_id: credit.id,
         debit_amount_id: debit.id,
       })

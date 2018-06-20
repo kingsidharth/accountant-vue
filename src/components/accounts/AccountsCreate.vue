@@ -52,15 +52,7 @@ export default {
 
   computed: {
     accounts: function() {
-      const accounts = this.$store.getters.accounts_get_all
-
-      return accounts.map(function(a) {
-        return {
-          id: a.id,
-          name: a.name,
-          selected: false
-        }
-      })
+      return this.$store.getters.accounts_get_all_summary
     },
   },
 

@@ -11,7 +11,7 @@
 
 */
 import Vue from 'vue'
-import { find, filter, includes, assign, map } from 'lodash'
+import { find, filter, includes, assign, map, pick } from 'lodash'
 
 import api from '../api'
 import { update_resource } from './helpers'
@@ -102,6 +102,14 @@ const actions = {
 const getters = {
   accounts_get_all: (state) => {
     return state.data
+  },
+
+  accounts_get_all_summary: (state) => {
+    return map(state.data, (a) => {
+      let account = pick(a, ['id', 'name'])
+      account.selected = false
+      return account
+    })
   },
 
   account_get_details: (state) => (id) => {

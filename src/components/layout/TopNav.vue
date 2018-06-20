@@ -2,7 +2,7 @@
   <nav class="navbar is-black" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a id="logo" class="navbar-item" href="/" v-bind:title='title'>
-        <b-icon icon="google-circles-group mdi-light"> </b-icon>
+        <b-icon :icon="app_icon_class + ' mdi-light'"> </b-icon>
         {{name}}
       </a>
     </div><!-- .navbar-brand -->
@@ -27,7 +27,14 @@
 <script>
 
 export default {
-  props: ['name', 'title'],
+  data: function() {
+    const meta = this.$store.state.meta
+    return {
+      name: meta.name,
+      title: meta.subtitle,
+      app_icon_class: meta.app_icon_class
+    }
+  },
 
   methods: {
     handle_click: function() {

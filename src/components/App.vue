@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <TopNav
-      v-bind:name='name'
-      v-bind:title='subtitle'
-    />
+    <TopNav/>
 
     <div class="columns">
       <div class="column is-2">
@@ -30,7 +27,7 @@ export default {
   name: 'app',
 
   data: function() {
-    return this.$store.state.meta
+    return {}
   }, // data
 
   mounted: function() {

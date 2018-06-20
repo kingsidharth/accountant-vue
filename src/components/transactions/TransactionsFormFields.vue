@@ -1,12 +1,15 @@
 <template>
   <section>
     <input type="hidden" :value="id" name="id"></input>
+    <input type="hidden" :value="get_selected_account_id('credit')" name="credit_account"></input>
+    <input type="hidden" :value="get_selected_account_id('debit')" name="debit_account"></input>
     <input type="hidden" :value="credit_amount_id" name="credit_amount_id"></input>
     <input type="hidden" :value="debit_amount_id" name="debit_amount_id"></input>
 
     <div class="columns">
       <div class="column is-6">
         <b-field label="Amount" label-for="amount"
+          :class="has_error('amount') ? ' has-danger-text ' : ''"
           :type="has_error('amount') ? has_error('amount').class : ''"
           :message="has_error('amount') ? has_error('amount').message : ''"
         >
@@ -26,44 +29,28 @@
 
     <div class="columns">
       <div class="column is-6">
-        <b-field label="Debit Account">
-          <b-select require="true"
-            placeholder="Select an Account"
-            name="debit_account"
-            :value="debit_account"
-            @input="handle_debit_change">
-
-            <option value="null">None</option>
-            <option
-                v-for="account in debit_accounts_list"
-                :value="account.id"
-                :key="account.id"
-                :selected="account.selected">
-                {{ account.name }}
-            </option>
-
-          </b-select>
+        <b-field label="Debit Account" label-for="debit_account">
+          <b-autocomplete
+            :value="!!this.debit_account ? this.debit_account.name : ''"
+            :v-model="selected.debit_account"
+            :open-on-focus="true"
+            :data="debit_accounts_list"
+            field="name"
+            @select="option => selected.debit_account = option">
+          </b-autocomplete>
         </b-field>
       </div><!-- column -->
 
       <div class="column is-6">
         <b-field label="Credit Account">
-          <b-select require="true"
-            placeholder="Select an Account"
-            name="credit_account"
-            :value="credit_account"
-            @input="handle_credit_change">
-
-            <option value="null">None</option>
-            <option
-                v-for="account in credit_accounts_list"
-                :value="account.id"
-                :key="account.id"
-                :selected="account.selected">
-                {{ account.name }}
-            </option>
-
-          </b-select>
+          <b-autocomplete
+            :value="!!this.credit_account ? this.credit_account.name : ''"
+            :v-model="selected.credit_account"
+            :open-on-focus="true"
+            :data="credit_accounts_list"
+            field="name"
+            @select="option => selected.credit_account = option">
+          </b-autocomplete>
         </b-field>
       </div><!-- column -->
 
@@ -72,40 +59,41 @@
 </template>
 
 <script>
-import { filter } from 'lodash'
+import { filter, get } from 'lodash'
 
 import fieldMixin from '../mixins/fields'
 
-const remove_account = function(accounts, id) {
+const remove_account = function(accounts, account) {
   /* accounts:Array, id:Integer => accounts:Array */
-  return filter(accounts, function(a) { return a.id != parseInt(id) })
+  return filter(accounts, function(a) { return a.id != parseInt(account.id) })
 }
 
 export default {
   name: 'transactions-create-fields',
   mixins: [fieldMixin],
-  props: {
-    id: {},
-    description: {},
-    amount: {},
-    credit_account: {},
-    debit_account: {},
-    credit_amount_id: {},
-    debit_amount_id: {},
-    accounts: {
-      require: true,
-      type: Array
-    },
-  }, // props
+  props: [
+    'id',
+    'description',
+    'amount',
+    'credit_account',
+    'debit_account',
+    'credit_amount_id',
+    'debit_amount_id',
+    'accounts'
+  ], // props
 
   data: function () {
     return {
       selected: {
-        credit_account: this.credit_account,
-        debit_account: this.debit_account
+        credit_account: null,
+        debit_account: null,
       },
     }
   }, //data
+
+  mounted: function() {
+    // console.log(this);
+  }, //mounted
 
   computed: {
     credit_accounts_list: function() {
@@ -132,14 +120,12 @@ export default {
   }, //computed
 
   methods: {
-    handle_debit_change: function(e){
-      this.selected.debit_account = e
+    get_selected_account_id: function(account_type) {
+      const type = account_type + '_account'
+      const prop_account = !!get(this, type) ? get(get(this, type), 'id') : null
+      const selected_account = !!get(this.selected, type) ? get(get(this.selected, type), 'id') : null
+      return !!selected_account ? selected_account : prop_account
     },
-
-    handle_credit_change: function(e) {
-      this.selected.credit_account = e
-    },
-
   }, //methods
 }
 </script>

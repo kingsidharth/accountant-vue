@@ -1,12 +1,27 @@
 <template>
   <section>
     <input type="hidden" :value="id" name="id"></input>
-    <input type="hidden" :value="get_selected_account_id('credit')" name="credit_account"></input>
-    <input type="hidden" :value="get_selected_account_id('debit')" name="debit_account"></input>
-    <input type="hidden" :value="credit_amount_id" name="credit_amount_id"></input>
-    <input type="hidden" :value="debit_amount_id" name="debit_amount_id"></input>
+    <input type="hidden" :value="get_selected_account_id('credit')" name="credit_account"/>
+    <input type="hidden" :value="get_selected_account_id('debit')" name="debit_account"/>
+    <input type="hidden" :value="credit_amount_id" name="credit_amount_id"/>
+    <input type="hidden" :value="debit_amount_id" name="debit_amount_id"/>
+    <input type="hidden" :value="get_robot_date( !!display_at ? display_at : get_editable_date)" name="display_at" />
+    <div class="columns is-multiline is-mobile" style="width: 500px;">
 
-    <div class="columns">
+      <div class="column is-6">
+        <b-field label="Select a date">
+          <b-datepicker
+              :value="get_editable_date"
+              :v-model="display_date"
+              :focused-date="get_editable_date"
+              :max-date="new Date()"
+              placeholder="Click to select..."
+              icon="calendar-today"
+              @input="(date) => get_robot_date(date)">
+          </b-datepicker>
+        </b-field>
+      </div><!-- .column -->
+
       <div class="column is-6">
         <b-field label="Amount" label-for="amount"
           :class="has_error('amount') ? ' has-danger-text ' : ''"
@@ -17,7 +32,7 @@
         </b-field>
       </div><!-- column -->
 
-      <div class="column is-6">
+      <div class="column is-12">
         <b-field label="Description" label-for="description"
           :type="has_error('description') ? has_error('description').class : ''"
           :message="has_error('description') ? has_error('description').message : ''"
@@ -59,7 +74,9 @@
 </template>
 
 <script>
-import { filter, get } from 'lodash'
+import moment from 'moment'
+import momentRandom from 'moment-random'
+import { filter, get, random } from 'lodash'
 
 import fieldMixin from '../mixins/fields'
 
@@ -79,7 +96,8 @@ export default {
     'debit_account',
     'credit_amount_id',
     'debit_amount_id',
-    'accounts'
+    'accounts',
+    'display_at',
   ], // props
 
   data: function () {
@@ -88,6 +106,8 @@ export default {
         credit_account: null,
         debit_account: null,
       },
+
+      display_date: new Date(),
     }
   }, //data
 
@@ -117,6 +137,11 @@ export default {
         return accounts
       }
     },
+
+    get_editable_date: function() {
+      const date = this.display_at
+      return !!date ? moment(date).toDate() : new Date()
+    },
   }, //computed
 
   methods: {
@@ -125,6 +150,19 @@ export default {
       const prop_account = !!get(this, type) ? get(get(this, type), 'id') : null
       const selected_account = !!get(this.selected, type) ? get(get(this.selected, type), 'id') : null
       return !!selected_account ? selected_account : prop_account
+    },
+
+    get_robot_date: function(data) {
+      const date = moment(data)
+      const today = moment()
+
+      let robot_date = date.format(moment.HTML5_FMT.DATETIME_LOCAL_SECONDS)
+
+      if(date.isBefore(today.subtract(1, 'days'))) {
+        robot_date =  date.add(random(1, 60), 'seconds').format(moment.HTML5_FMT.DATETIME_LOCAL_SECONDS)
+      }
+
+      return robot_date
     },
   }, //methods
 }

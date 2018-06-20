@@ -15,6 +15,7 @@
           v-bind:accounts="get_select_accounts()"
           v-bind:credit_amount_id="model.credit_amount_id"
           v-bind:debit_amount_id="model.debit_amount_id"
+          v-bind:display_at="model.display_at"
         />
       </div>
 
@@ -49,6 +50,7 @@ export default {
         debit_account: null,
         credit_amount_id: null,
         debit_amount_id: null,
+        display_at: null,
       },
     }
   },
@@ -79,7 +81,7 @@ export default {
       const credit = find(data.amounts, { is_credit: true })
       const debit = find(data.amounts,  { is_debit: true })
 
-      return assign({}, pick(data, ['id', 'description']), {
+      return assign({}, pick(data, ['id', 'description', 'display_at']), {
         amount: credit.amount,
         credit_account: credit.account,
         debit_account: debit.account,
@@ -98,6 +100,7 @@ export default {
         debit_account: true,
         credit_amount_id: true,
         debit_amount_id: true,
+        display_at: true,
       })
 
       const errors = validate(data, transactions_model)
@@ -121,16 +124,18 @@ export default {
     },
 
     get_transaction_object: function(form_object) {
+      const amount = form_object.amount
+      const credit_account_id = parseInt(form_object.credit_account)
+      const debit_account_id = parseInt(form_object.debit_account)
+
       const transaction_id = parseInt(form_object.id) || null
       const credit_id = parseInt(form_object.credit_amount_id) || null
       const debit_id = parseInt(form_object.debit_amount_id) || null
-      const credit_account_id = parseInt(form_object.credit_account) || null
-      const debit_account_id = parseInt(form_object.debit_account) || null
-      const amount = form_object.amount || null
 
       return {
         id: transaction_id,
         description: form_object.description,
+        display_at: form_object.display_at,
         amounts: [
           {
             id: credit_id,

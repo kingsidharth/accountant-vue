@@ -15,11 +15,20 @@
 import { includes } from 'lodash';
 import componentMap from './componentMap'
 
+
 /*
 
   Internals & Partials
 
 */
+/* Modal Width Map */
+
+const modal_widths = {
+  accounts: '360px',
+  transactions: '400px',
+}
+
+/* Intent Partial */
 const intent_partial = {
   create: false,
   edit: false,
@@ -35,12 +44,14 @@ const intent_partial = {
 */
 const state = {
   name: "Accountant",
+  app_icon_class: 'google-circles-group',
   subtitle: "Count the beans...",
   col: 23,
 
   modal: {
     active: false,
-    content: {}
+    content: {},
+    width: 640,
   },
 
   sidebar: {
@@ -72,6 +83,10 @@ const mutations = {
 
   modal_close(state) {
     state.modal.active = false
+  },
+
+  modal_set_width(state, payload) {
+    state.modal.width = parseInt(payload)
   },
 
   reset_intent(state) {
@@ -127,8 +142,9 @@ const actions = {
     const type = resource.type
 
     if (includes(known_types, type)) {
+      context.commit('set_create_intent', resource)
+      context.commit('modal_set_width', modal_widths[type])
       context.dispatch('modal_open', componentMap[type])
-      context.commit('set_create_intent', resource )
     }
   },
 
@@ -138,6 +154,7 @@ const actions = {
   },
 
   intent_delete_context(context, ids) {
+
   },
 }
 
@@ -149,14 +166,27 @@ const actions = {
 */
 const getters = {
 
-  modal_get_content: (state) => (modal) => {
-    return modal.content
+  /* */
+
+  /* Modal */
+  get_modal: (state) => {
+    return state.modal
   },
 
-  get_intent: (state) => (intent) => {
-    return intent
+  get_modal_status: (state) => {
+    return state.modal.active
   },
 
+  modal_get_content: (state) => {
+    return state.modal.content
+  },
+
+  get_intent: (state) => {
+    return state.intent
+  },
+
+
+  /* Intent */
   get_intent_id: (state) => {
     return state.intent.id
   },

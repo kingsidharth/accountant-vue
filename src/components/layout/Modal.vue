@@ -1,8 +1,9 @@
 <template>
   <b-modal  :active.sync="active"
-            :width="640" scroll="keep"
+            :width="width"
             :component="content"
             :onCancel="close"
+            scroll="keep"
             has-modal-card>
     <div class="content">
 
@@ -14,7 +15,7 @@
 export default {
   name: 'modal',
   data: function() {
-    return this.$store.state.meta.modal
+    return this.$store.getters.get_modal
   }, //data
 
   methods: {

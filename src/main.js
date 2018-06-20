@@ -6,8 +6,8 @@ import VueFormGenerator from 'vue-form-generator'
 import VueRouter from 'vue-router'
 import VueD3 from 'vue-d3'
 
-import common_helpers from './helpers';
 import store from './store'
+import common_helpers from './components/helpers';
 import AppFrame from './components/App.vue'
 import routes from './routes'
 import AccountsChildTree from './components/accounts/AccountsChildTree.vue'
